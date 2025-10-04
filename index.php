@@ -443,14 +443,14 @@
         }
         .payslip-wrapper {
             margin-top: -150px;
-            margin-left: -180px;
+            margin-left: -145px;
             display: flex;
             flex-wrap: nowrap;
             gap: 24px;
             justify-content: flex-start;
             width: 100%;
             max-width: 100%;
-            transform: scale(0.52); 
+            transform: scale(0.6); 
         }
         .payslip {
             width: 560px !important;       
@@ -1011,7 +1011,7 @@
                 format: 'a4',
                 scale: 4, 
                 marginLeft: -25,
-                marginTop: -25,
+                marginTop: -15,
                 contentWidth: 360,
                 backgroundColor: '#FFFFFF'
             };

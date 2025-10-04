@@ -1,0 +1,8 @@
+{
+    "name": "admin/payslip-generator-system",
+    "description": "PayslipGeneratorSystem",
+    "minimum-stability": "stable",
+    "require": {
+        "phpoffice/phpspreadsheet": "^4.5"
+    }
+}

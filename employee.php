@@ -391,13 +391,12 @@
         }
 
        .table-wrapper::-webkit-scrollbar {
-            height: 8px;
+            height: 6px;
             background: #f1f1f1;
         }
 
         .table-wrapper::-webkit-scrollbar-thumb {
-            background-color: #bbb;
-            border-radius: 4px;
+            background-color: #29659cff;
         }
 
         .table-wrapper::-webkit-scrollbar-track {
@@ -410,11 +409,13 @@
             margin-top: 20px;
             background: white;
             border-radius: 10px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
             overflow: hidden;
         }
 
         .table th {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            background: #3498db ;
             color: white;
             padding: 15px 12px;
             text-align: left;
@@ -724,14 +725,14 @@
 
     <div id="add-department-modal" popover class="centered-popover">
         <div class="popover-header">
-            <h3>Add New Department</h3>
+            <h3 style="color: #3498db">Add New Department</h3>
             <button popovertarget="add-department-modal" popovertargetaction="hide" class="close-btn">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <form id="department-form"  method="POST" action="saveDepartment.php">
             <div class="form-group">
-                <label for="new-department">Department Name:</label>
+                <label for="new-department" style="color: #ffffff">Department Name:</label>
                 <input type="text" id="new-department" name="department" required>
             </div>
             <div class="form-actions">

@@ -729,7 +729,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <form id="department-form">
+        <form id="department-form"  method="POST" action="saveDepartment.php">
             <div class="form-group">
                 <label for="new-department">Department Name:</label>
                 <input type="text" id="new-department" name="department" required>
@@ -1346,6 +1346,37 @@
                 alert('Error saving employee data. Please try again.');
             });
         });
+
+
+
+        document.getElementById('department-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Send data to PHP backend
+            fetch('saveDepartment.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert('Department added successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving employee data. Please try again.');
+            });
+        });
+
+
+        
 
         // Reset form
         function resetForm() {

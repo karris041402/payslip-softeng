@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2025 at 09:30 AM
+-- Generation Time: Oct 06, 2025 at 11:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -24,11 +24,46 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `department`
+--
+
+CREATE TABLE `department` (
+  `id` int(11) NOT NULL,
+  `department_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`id`, `department_name`) VALUES
+(1, 'General Administration'),
+(2, 'Auxilliary'),
+(3, 'Advance Education'),
+(4, 'College of Engineering'),
+(5, 'College of Industrial Technology'),
+(6, 'College of Business Administration and Accountancy'),
+(7, 'College of Arts and Sciences'),
+(8, 'College of Architecture and Fine Arts'),
+(9, 'College of Education'),
+(10, 'Physical Education'),
+(11, 'Research'),
+(12, 'Cavite Extension'),
+(13, 'Temporary Employee'),
+(14, 'New Employee Batch 3'),
+(15, 'New Employee Batch 4'),
+(16, 'New Employee Batch A');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employeedatapayroll`
 --
 
 CREATE TABLE `employeedatapayroll` (
   `id` int(11) NOT NULL,
+  `month_id` int(11) DEFAULT NULL,
+  `department_id` int(11) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `position` varchar(100) DEFAULT NULL,
   `rateNbc594` float DEFAULT NULL,
@@ -53,16 +88,10 @@ CREATE TABLE `employeedatapayroll` (
   `philHealthGovernmentShare` float DEFAULT NULL,
   `pagibig` float DEFAULT NULL,
   `netSalary` float DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `department` varchar(100) DEFAULT NULL,
+  `month` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `employeedatapayroll`
---
-
-INSERT INTO `employeedatapayroll` (`id`, `name`, `position`, `rateNbc594`, `nbcDiff594`, `increment`, `grossSalary`, `absent`, `days`, `hours`, `minutes`, `deductedGrossSalary`, `withHoldingTax`, `totalGsisDeds`, `totalPagibigDeds`, `philHealthEmployeeShare`, `totalOtherDeds`, `totalDeds`, `pay1st`, `pay2nd`, `rtIns`, `employeesCompensation`, `philHealthGovernmentShare`, `pagibig`, `netSalary`, `created_at`) VALUES
-(1, 'Angkua, Harris M.', 'Student Assistant', 5456, 456, 4654, 654, 654, 654, 654, 564, 654, 654, 654, 654, 654, 654, 5645, 4, 654, 564, 654, 654, 654, 654, '2025-10-04 06:37:42'),
-(2, 'Joshua Garcia', 'Actor', 1, 21, 1, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 2, 12, 12, 12, 12, 1, 21, 21, 21, '2025-10-04 06:42:30');
 
 -- --------------------------------------------------------
 
@@ -72,6 +101,9 @@ INSERT INTO `employeedatapayroll` (`id`, `name`, `position`, `rateNbc594`, `nbcD
 
 CREATE TABLE `employeedataremittance` (
   `id` int(11) NOT NULL,
+  `payroll_id` int(11) DEFAULT NULL,
+  `month_id` int(11) DEFAULT NULL,
+  `department_id` int(11) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `position` varchar(100) DEFAULT NULL,
   `witholdingTax` float DEFAULT NULL,
@@ -98,16 +130,40 @@ CREATE TABLE `employeedataremittance` (
   `esla` float DEFAULT NULL,
   `totalOtherDeds` float DEFAULT NULL,
   `totalDeds` float DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `department` varchar(100) DEFAULT NULL,
+  `month` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `month`
+--
+
+CREATE TABLE `month` (
+  `id` int(11) NOT NULL,
+  `month_name` varchar(100) NOT NULL,
+  `department_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data for table `employeedataremittance`
+-- Dumping data for table `month`
 --
 
-INSERT INTO `employeedataremittance` (`id`, `name`, `position`, `witholdingTax`, `personalLifeRet`, `gsisSalaryLoan`, `gsisPolicyLoan`, `gfal`, `cpl`, `mpl`, `mplLite`, `emergencyLoan`, `totalGsisDeds`, `pagibigFundCont`, `pagibig2`, `multiPurpLoan`, `pagibigCalamityLoan`, `totalPagibigDeds`, `philHealth`, `disallowance`, `landbankSalaryLoan`, `earistCreditCoop`, `feu`, `mtslaSalaryLoan`, `esla`, `totalOtherDeds`, `totalDeds`, `created_at`) VALUES
-(1, 'Angkua, Harris M.', 'Student Assistant', 64, 54, 654, 64, 4, 654, 654, 654, 64, 65, 456, 46, 654, 654, 654, 65, 456, 465, 465, 465, 465, 465, 465, 4, '2025-10-04 06:37:42'),
-(2, 'Joshua Garcia', 'Actor', 21, 2, 12, 12, 12, 12, 12, 12, 12, 1, 21, 21, 21, 21, 2, 21, 21, 21, 21, 21, 21, 21, 21, 21, '2025-10-04 06:42:30');
+INSERT INTO `month` (`id`, `month_name`, `department_id`) VALUES
+(1, 'January', NULL),
+(2, 'February', NULL),
+(3, 'March', NULL),
+(4, 'April', NULL),
+(5, 'May', NULL),
+(6, 'June', NULL),
+(7, 'July', NULL),
+(8, 'August', NULL),
+(9, 'September', NULL),
+(10, 'October', NULL),
+(11, 'November', NULL),
+(12, 'December', NULL);
 
 -- --------------------------------------------------------
 
@@ -280,23 +336,55 @@ INSERT INTO `payslip_history` (`id`, `file_name`, `employee_name`, `department`,
 (148, 'payslip_BAUTISTA,_JULY_2025.pdf', 'baut', 'CEN', 'JULY,AUGUST,SEPTEMBER', '2025-10-01 16:10:43', 0),
 (149, 'payslip_NUÃ‘EZ,_MARCH_2025.pdf', 'DINA', 'CAS', 'MARCH,APRIL,MAY', '2025-10-01 17:18:00', 0),
 (150, 'payslip_NUÃ‘EZ,_JUNE_2025.pdf', 'DINA', 'CAS', 'JUNE,JULY,AUGUST', '2025-10-01 17:18:25', 0),
-(151, 'payslip_NUÃ‘EZ,_JULY_2025.pdf', 'DINA', 'CAS', 'JULY,AUGUST,SEPTEMBER', '2025-10-01 17:26:37', 0);
+(151, 'payslip_NUÃ‘EZ,_JULY_2025.pdf', 'DINA', 'CAS', 'JULY,AUGUST,SEPTEMBER', '2025-10-01 17:26:37', 0),
+(152, 'payslip_MAMARADLO,_JULY_2025.pdf', 'mama', 'ADMIN', 'JULY,AUGUST', '2025-10-04 16:31:14', 0),
+(153, 'payslip_MAMARADLO,_JULY_2025.pdf', 'mama', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-04 16:32:58', 0),
+(154, 'payslip_MAMARADLO,_JULY_2025.pdf', 'mama', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-04 16:34:22', 0),
+(155, 'payslip_MAMARADLO,_JULY_2025.pdf', 'mama', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-04 16:34:50', 0),
+(156, 'payslip_MAMARADLO,_JULY_2025.pdf', 'mama', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-04 16:35:20', 0),
+(157, 'payslip_MAMARADLO,_APRIL_2025.pdf', 'mama', 'ADMIN', 'APRIL,MAY,JUNE', '2025-10-04 16:35:43', 0),
+(158, 'payslip_TIPAN,_JULY_2025.pdf', 'TIPAN', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-06 10:38:29', 0),
+(159, 'payslip_CABOGATAN,_SEPTEMBER_2025.pdf', 'CABOGATAN', 'ADMIN', 'SEPTEMBER', '2025-10-06 10:47:59', 0),
+(160, 'payslip_CABOGATAN,_JULY_2025.pdf', 'CABOGATAN', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-06 10:48:28', 0),
+(161, 'payslip_FALSARIO,_JULY_2025.pdf', 'FALSARIO', 'N EMPLOYEE 3', 'JULY,AUGUST,SEPTEMBER', '2025-10-06 10:54:43', 0),
+(162, 'payslip_CASTILLO,_JULY_2025.pdf', 'CASTILLO', 'ADMIN', 'JULY,AUGUST,SEPTEMBER', '2025-10-06 10:55:39', 0),
+(163, 'payslip_DATU,_JULY_2025.pdf', 'DATU', 'CIT', 'JULY,AUGUST,SEPTEMBER', '2025-10-06 10:58:45', 0),
+(164, 'payslip_DATU,_APRIL_2025.pdf', 'datu', 'CIT', 'APRIL,MAY,JUNE', '2025-10-06 11:08:24', 0),
+(165, 'payslip_DATU,_MARCH_2025.pdf', 'datu', 'CIT', 'MARCH,APRIL,MAY', '2025-10-06 11:23:27', 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `department`
+--
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `employeedatapayroll`
 --
 ALTER TABLE `employeedatapayroll`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_payroll_month` (`month_id`),
+  ADD KEY `fk_payroll_department` (`department_id`);
 
 --
 -- Indexes for table `employeedataremittance`
 --
 ALTER TABLE `employeedataremittance`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `payroll_id` (`payroll_id`),
+  ADD KEY `fk_remittance_month` (`month_id`),
+  ADD KEY `fk_remittance_department` (`department_id`);
+
+--
+-- Indexes for table `month`
+--
+ALTER TABLE `month`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_month_department` (`department_id`);
 
 --
 -- Indexes for table `payslip_history`
@@ -309,22 +397,59 @@ ALTER TABLE `payslip_history`
 --
 
 --
+-- AUTO_INCREMENT for table `department`
+--
+ALTER TABLE `department`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT for table `employeedatapayroll`
 --
 ALTER TABLE `employeedatapayroll`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `employeedataremittance`
 --
 ALTER TABLE `employeedataremittance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `month`
+--
+ALTER TABLE `month`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `payslip_history`
 --
 ALTER TABLE `payslip_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `employeedatapayroll`
+--
+ALTER TABLE `employeedatapayroll`
+  ADD CONSTRAINT `fk_payroll_department` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_payroll_month` FOREIGN KEY (`month_id`) REFERENCES `month` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `employeedataremittance`
+--
+ALTER TABLE `employeedataremittance`
+  ADD CONSTRAINT `fk_remittance_department` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_remittance_month` FOREIGN KEY (`month_id`) REFERENCES `month` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_remittance_payroll` FOREIGN KEY (`payroll_id`) REFERENCES `employeedatapayroll` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `month`
+--
+ALTER TABLE `month`
+  ADD CONSTRAINT `fk_month_department` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

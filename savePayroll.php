@@ -4,8 +4,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $host = 'localhost';
-$user = 'root'; // change if needed
-$password = ''; // change if needed
+$user = 'root';
+$password = '';
 $db = 'payslip-generator';
 
 $conn = new mysqli($host, $user, $password, $db);
@@ -16,6 +16,8 @@ if ($conn->connect_error) {
 
 // Collect form data for payroll
 $name = $_POST['name'];
+$department_name = $_POST['department'];
+$month_name = $_POST['month'];
 $position = $_POST['position'];
 $rateNbc594 = $_POST['rateNbc594'] ?? 0;
 $nbcDiff594 = $_POST['nbcDiff594'] ?? 0;
@@ -70,51 +72,70 @@ $totalDedsRemit = $_POST['totalDedsRemit'] ?? 0;
 $conn->begin_transaction();
 
 try {
-    // Insert into payroll table
+    // Get department_id from department name
+    $deptQuery = "SELECT id FROM department WHERE department_name = ?";
+    $stmtDept = $conn->prepare($deptQuery);
+    $stmtDept->bind_param("s", $department_name);
+    $stmtDept->execute();
+    $deptResult = $stmtDept->get_result();
+    $department_id = $deptResult->fetch_assoc()['id'];
+    $stmtDept->close();
+
+    // Get month_id from month name
+    $monthQuery = "SELECT id FROM month WHERE month_name = ?";
+    $stmtMonth = $conn->prepare($monthQuery);
+    $stmtMonth->bind_param("s", $month_name);
+    $stmtMonth->execute();
+    $monthResult = $stmtMonth->get_result();
+    $month_id = $monthResult->fetch_assoc()['id'];
+    $stmtMonth->close();
+
+    // Insert into payroll table using IDs
     $sqlPayroll = "INSERT INTO employeedatapayroll (
         name, position, rateNbc594, nbcDiff594, increment, grossSalary,
         absent, days, hours, minutes, deductedGrossSalary, withHoldingTax,
         totalGsisDeds, totalPagibigDeds, philHealthEmployeeShare, totalOtherDeds,
         totalDeds, pay1st, pay2nd, rtIns, employeesCompensation,
-        philHealthGovernmentShare, pagibig, netSalary
+        philHealthGovernmentShare, pagibig, netSalary, department_id, month_id
     ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )";
 
     $stmtPayroll = $conn->prepare($sqlPayroll);
     $stmtPayroll->bind_param(
-        "ssdddddddddddddddddddddd",
+        "ssddddddddddddddddddddddii",
         $name, $position, $rateNbc594, $nbcDiff594, $increment, $grossSalary,
         $absent, $days, $hours, $minutes, $deductedGrossSalary, $withHoldingTax,
         $totalGsisDeds, $totalPagibigDeds, $philHealthEmployeeShare, $totalOtherDeds,
         $totalDeds, $pay1st, $pay2nd, $rtIns, $employeesCompensation,
-        $philHealthGovernmentShare, $pagibig, $netSalary
+        $philHealthGovernmentShare, $pagibig, $netSalary, $department_id, $month_id
     );
 
     $payrollSuccess = $stmtPayroll->execute();
+    $payroll_id = $conn->insert_id; // Get the last inserted ID
     $stmtPayroll->close();
 
-    // Insert into remittance table
+    // Insert into remittance table using IDs
     $sqlRemittance = "INSERT INTO employeedataremittance (
         name, position, witholdingTax, personalLifeRet, gsisSalaryLoan, gsisPolicyLoan,
         gfal, cpl, mpl, mplLite, emergencyLoan, totalGsisDeds, pagibigFundCont,
         pagibig2, multiPurpLoan, pagibigCalamityLoan, totalPagibigDeds, philHealth,
         disallowance, landbankSalaryLoan, earistCreditCoop, feu, mtslaSalaryLoan,
-        esla, totalOtherDeds, totalDeds
+        esla, totalOtherDeds, totalDeds, department_id, month_id, payroll_id
     ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )";
 
     $stmtRemittance = $conn->prepare($sqlRemittance);
     $stmtRemittance->bind_param(
-        "ssdddddddddddddddddddddddd",
+        "ssddddddddddddddddddddddddiii",
         $name, $position, $withholdingTaxRemit, $personalLifeRetRemit, $gsisSalaryLoanRemit, 
         $gsisPolicyLoanRemit, $gfalRemit, $cplRemit, $mplRemit, $mplLiteRemit, 
         $emergencyLoanRemit, $totalGsisDedsRemit, $pagibigFundContRemit, $pagibig2Remit,
         $multiPurpLoanRemit, $pagibigCalamityLoanRemit, $totalPagibigDedsRemit, 
         $philHealthRemit, $disallowanceRemit, $landbankSalaryLoanRemit, 
         $earistCreditCoopRemit, $feuRemit, $mtslaSalaryLoanRemit, $eslaRemit, 
-        $totalOtherDedsRemit, $totalDedsRemit
+        $totalOtherDedsRemit, $totalDedsRemit, $department_id, $month_id, $payroll_id
     );
 
     $remittanceSuccess = $stmtRemittance->execute();

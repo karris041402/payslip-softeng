@@ -900,43 +900,43 @@
                             </div>
                             <div class="form-group">
                                 <label for="department">Department</label>
-                                <select id="department" class="form-control" required>
+                                <select id="department" class="form-control" name="department" required>
                                     <option value="">Select Department</option>
-                                    <option value="ADMIN">General Administration</option>
-                                    <option value="AUXILLIARY">Auxialliary</option>
-                                    <option value="ADVANCE">Advance Education</option>
-                                    <option value="CEN">College of Engineering</option>
-                                    <option value="CIT">College of Industrial Technology</option>
-                                    <option value="CBA">College of Business Administration and Accountancy</option>
-                                    <option value="CAS">College of Arts and Sciences</option>
-                                    <option value="CAFA">College of Architecture and Fine Arts</option>
-                                    <option value="CED">College of Education</option>
-                                    <option value="PE">Physical Education</option>
-                                    <option value="RESEARCH">Research</option>
-                                    <option value="EXTENSION">Cavite Extension</option>
-                                    <option value="TEMPO">Temporary Employee</option>
-                                    <option value="N EMPLOYEE 3">New Employee Batch 3</option>
-                                    <option value="N EMPLOYEE 4">New Employee Batch 4</option>
-                                    <option value="N EMPLOYEE A">New Employee Batch A</option>
+                                    <option value="General Administration">General Administration</option>
+                                    <option value="Auxiliary">Auxiliary</option>
+                                    <option value="Advance Education">Advance Education</option>
+                                    <option value="College of Engineering">College of Engineering</option>
+                                    <option value="College of Industrial Technology">College of Industrial Technology</option>
+                                    <option value="College of Business Administration and Accountancy">College of Business Administration and Accountancy</option>
+                                    <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                                    <option value="College of Architecture and Fine Arts">College of Architecture and Fine Arts</option>
+                                    <option value="College of Education">College of Education</option>
+                                    <option value="Physical Education">Physical Education</option>
+                                    <option value="Research">Research</option>
+                                    <option value="Cavite Extension">Cavite Extension</option>
+                                    <option value="Temporary Employee">Temporary Employee</option>
+                                    <option value="New Employee Batch 3">New Employee Batch 3</option>
+                                    <option value="New Employee Batch 4">New Employee Batch 4</option>
+                                    <option value="New Employee Batch A">New Employee Batch A</option>
                                 </select> 
                             </div>
 
                             <div class="form-group">
                                 <label for="department">Month</label>
-                                <select id="month" class="form-control" required>
+                                <select id="month" class="form-control" name="month" required>
                                     <option value="">Select Month</option>
-                                    <option value="">January</option>
-                                    <option value="">February</option>
-                                    <option value="">March</option>
-                                    <option value="">April</option>
-                                    <option value="">May</option>
-                                    <option value="">June</option>
-                                    <option value="">July</option>
-                                    <option value="">August</option>
-                                    <option value="">Spetember</option>
-                                    <option value="">October</option>
-                                    <option value="">November</option>
-                                    <option value="">December</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
                                 </select> 
                             </div>
                         </div>
@@ -950,8 +950,8 @@
                                 <input type="number" step="0.01" id="rateNbc594" name="rateNbc594" placeholder="0.00">
                             </div>
                             <div class="form-group">
-                                <label for="nbcDiff594">nbcDiff594</label>
-                                <input type="number" step="0.01" id="nbcDiff594" name="nbcDiff594" placeholder="0.00">
+                                <label for="nbcDiffl597">nbcDiff594</label>
+                                <input type="number" step="0.01" id="nbcDiff594" name="nbcDiffl597" placeholder="0.00">
                             </div>
                             <div class="form-group">
                                 <label for="increment">Increment</label>
@@ -981,11 +981,6 @@
                             <div class="form-group">
                                 <label for="minutes">Minutes</label>
                                 <input type="number" step="0.01" id="minutes" name="minutes" placeholder="0.00">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="deductedGrossSalary">Deducted Gross Salary</label>
-                                <input type="number" step="0.01" id="deductedGrossSalary" name="deductedGrossSalary" placeholder="0.00">
                             </div>
 
                             <div class="form-group">
@@ -1394,6 +1389,19 @@
 
         // Initial render
         renderEmployeeTable();
+
+
+
+        // Add this script in employee.php
+        fetch('get_departments.php')
+            .then(res => res.json())
+            .then(data => {
+                const deptSelect = document.getElementById('department');
+                deptSelect.innerHTML = '<option value="">Select Department</option>';
+                data.departments.forEach(dept => {
+                    deptSelect.innerHTML += `<option value="${dept.department_name}">${dept.department_name}</option>`;
+                });
+            });
     </script>
 </body>
 </html>

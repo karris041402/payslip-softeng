@@ -682,25 +682,24 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="department">Department</label>
-                            <select id="department" class="form-control" required>
+                            <select id="department" class="form-control" name="department" required>
                                 <option value="">Select Department</option>
-                                <option value="ADMIN">General Administration</option>
-                                <option value="AUXILLIARY">Auxialliary</option>
-                                <option value="ADVANCE">Advance Education</option>
-                                <option value="CEN">College of Engineering</option>
-                                <option value="CIT">College of Industrial Technology</option>
-                                <option value="CBA">College of Business Administration and Accountancy</option>
-                                <option value="CAS">College of Arts and Sciences</option>
-                                <option value="CAFA">College of Architecture and Fine Arts</option>
-                                <option value="CED">College of Education</option>
-                                <option value="PE">Physical Education</option>
-                                <option value="RESEARCH">Research</option>
-                                <option value="EXTENSION">Cavite Extension</option>
-                                <option value="TEMPO">Temporary Employee</option>
-                                <option value="N EMPLOYEE 3">New Employee Batch 3</option>
-                                <option value="N EMPLOYEE 4">New Employee Batch 4</option>
-                                <option value="N EMPLOYEE A">New Employee Batch A</option>
-                                <option value="add_department" style="color: #3498db;">➕ Add Department</option>
+                                <option value="General Administration">General Administration</option>
+                                <option value="Auxiliary">Auxiliary</option>
+                                <option value="Advance Education">Advance Education</option>
+                                <option value="College of Engineering">College of Engineering</option>
+                                <option value="College of Industrial Technology">College of Industrial Technology</option>
+                                <option value="College of Business Administration and Accountancy">College of Business Administration and Accountancy</option>
+                                <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                                <option value="College of Architecture and Fine Arts">College of Architecture and Fine Arts</option>
+                                <option value="College of Education">College of Education</option>
+                                <option value="Physical Education">Physical Education</option>
+                                <option value="Research">Research</option>
+                                <option value="Cavite Extension">Cavite Extension</option>
+                                <option value="Temporary Employee">Temporary Employee</option>
+                                <option value="New Employee Batch 3">New Employee Batch 3</option>
+                                <option value="New Employee Batch 4">New Employee Batch 4</option>
+                                <option value="New Employee Batch A">New Employee Batch A</option>
                             </select> 
                         </div>
                         
@@ -711,18 +710,18 @@
                                     Select Months <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu" style="display:none;">
-                                    <li><label><input type="checkbox" value="JANUARY"> January</label></li>
-                                    <li><label><input type="checkbox" value="FEBRUARY"> February</label></li>
-                                    <li><label><input type="checkbox" value="MARCH"> March</label></li>
-                                    <li><label><input type="checkbox" value="APRIL"> April</label></li>
-                                    <li><label><input type="checkbox" value="MAY"> May</label></li>
-                                    <li><label><input type="checkbox" value="JUNE"> June</label></li>
-                                    <li><label><input type="checkbox" value="JULY"> July</label></li>
-                                    <li><label><input type="checkbox" value="AUGUST"> August</label></li>
-                                    <li><label><input type="checkbox" value="SEPTEMBER"> September</label></li>
-                                    <li><label><input type="checkbox" value="OCTOBER"> October</label></li>
-                                    <li><label><input type="checkbox" value="NOVEMBER"> November</label></li>
-                                    <li><label><input type="checkbox" value="DECEMBER"> December</label></li>
+                                    <li><label><input type="checkbox" value="January"> January</label></li>
+                                    <li><label><input type="checkbox" value="February"> February</label></li>
+                                    <li><label><input type="checkbox" value="March"> March</label></li>
+                                    <li><label><input type="checkbox" value="April"> April</label></li>
+                                    <li><label><input type="checkbox" value="May"> May</label></li>
+                                    <li><label><input type="checkbox" value="June"> June</label></li>
+                                    <li><label><input type="checkbox" value="July"> July</label></li>
+                                    <li><label><input type="checkbox" value="August"> August</label></li>
+                                    <li><label><input type="checkbox" value="September"> September</label></li>
+                                    <li><label><input type="checkbox" value="October"> October</label></li>
+                                    <li><label><input type="checkbox" value="November"> November</label></li>
+                                    <li><label><input type="checkbox" value="December"> December</label></li>
                                 </ul>
                             </div>
                             <input type="hidden" id="month" name="month" required>
@@ -757,7 +756,7 @@
 
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <img src="EARIST_Logo (1).png" alt="Logo" class="sidebar-logo">
+            <img src="earist-logo.png" alt="Logo" class="sidebar-logo">
             <span class="sidebar-title">HUMAN RESOURCES MANAGEMENT SYSTEM</span>
         </div>
         <ul class="sidebar-menu">

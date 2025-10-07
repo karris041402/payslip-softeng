@@ -20,7 +20,7 @@ $department_name = $_POST['department'];
 $month_name = $_POST['month'];
 $position = $_POST['position'];
 $rateNbc594 = $_POST['rateNbc594'] ?? 0;
-$nbcDiff594 = $_POST['nbcDiff594'] ?? 0;
+$nbcDiffl597 = $_POST['nbcDiffl597'] ?? 0;
 $increment = $_POST['increment'] ?? 0;
 $grossSalary = $_POST['grossSalary'] ?? 0;
 $absent = $_POST['absent'] ?? 0;
@@ -92,25 +92,24 @@ try {
 
     // Insert into payroll table using IDs
     $sqlPayroll = "INSERT INTO employeedatapayroll (
-        name, position, rateNbc594, nbcDiff594, increment, grossSalary,
-        absent, days, hours, minutes, deductedGrossSalary, withHoldingTax,
+        name, position, rateNbc594, nbcDiffl597, increment, grossSalary,
+        absent, days, hours, minutes, withHoldingTax,
         totalGsisDeds, totalPagibigDeds, philHealthEmployeeShare, totalOtherDeds,
         totalDeds, pay1st, pay2nd, rtIns, employeesCompensation,
         philHealthGovernmentShare, pagibig, netSalary, department_id, month_id
     ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )";
 
     $stmtPayroll = $conn->prepare($sqlPayroll);
     $stmtPayroll->bind_param(
-        "ssddddddddddddddddddddddii",
-        $name, $position, $rateNbc594, $nbcDiff594, $increment, $grossSalary,
-        $absent, $days, $hours, $minutes, $deductedGrossSalary, $withHoldingTax,
+        "ssdddddddddddddddddddddii",
+        $name, $position, $rateNbc594, $nbcDiffl597, $increment, $grossSalary,
+        $absent, $days, $hours, $minutes, $withHoldingTax,
         $totalGsisDeds, $totalPagibigDeds, $philHealthEmployeeShare, $totalOtherDeds,
         $totalDeds, $pay1st, $pay2nd, $rtIns, $employeesCompensation,
         $philHealthGovernmentShare, $pagibig, $netSalary, $department_id, $month_id
     );
-
     $payrollSuccess = $stmtPayroll->execute();
     $payroll_id = $conn->insert_id; // Get the last inserted ID
     $stmtPayroll->close();

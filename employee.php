@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Management System</title>
+    <link rel="icon" type="image/x-icon" href="EARIST_Logo (1).ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -57,7 +58,7 @@
             border-bottom: 3px solid #3498db;
         }
         body.dark-mode .form-section{
-            box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.15), -6px -6px 10px rgba(0, 0, 0, 0.16) !important; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         body.dark-mode .form-control,
@@ -134,7 +135,7 @@
             width: calc(100% - 300px);
             margin-left: 280px;
             margin-top: 4px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.50);
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1), 
                         0 20px 60px rgba(0,0,0,0.08);
@@ -415,6 +416,7 @@
         }
 
         .table th {
+            border-right: solid 1px rgba(23, 28, 48, 0.5);
             background: #3498db ;
             color: white;
             padding: 15px 12px;
@@ -427,7 +429,7 @@
         }
 
         .table td {
-            border: 1px solid #e0e6ed;
+            border-right: solid 1px rgba(23, 28, 48, 0.5);
             padding: 12px;
             text-align: left;
             font-size: 13px;
@@ -455,9 +457,7 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 
-        -6px -6px 10px rgba(0, 0, 0, 0.15), 
-        4px  4px 15px rgba(163, 183, 212, 0.8); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
 
@@ -703,6 +703,170 @@
             }
         }
 
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .page-title h1{
+            color:  white;
+        }
+        .page-title h1 {
+            color:  #646565ff;
+            font-size: 24px;
+        }
+        .export-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Statistics Overview */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .wrapper-icon{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .wrapper-icon .number{
+            margin-top: -10px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body.dark-mode .stat-card {
+            background: #232b36 !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3) !important;
+        }
+
+        body.dark-mode .stat-card .label {
+            color: white !important;
+        }
+
+        body.dark-mode .stat-card .number {
+            color: #acbbefff !important;
+        }
+
+        .stat-card .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #023336;
+        }
+        .stat-card .label {
+            color:gray;
+            font-size: 14px;
+        }
+
+
+        .filters-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        body.dark-mode .filters-section {
+            background: #232b36 !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3) !important;
+            z-index: 1000;
+        }
+        .filters-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .filters-title {
+            color: white;
+        }
+
+        body.dark-mode .filter-group  label {
+            color: #c4cdd5ff;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .filter-group label {
+            font-size: 14px;
+            color: #4f5051ff;
+            margin-bottom: 5px;
+        }
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .filter-btn {
+            margin-left: 10px;
+            width: 100%;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .filter-btn.apply {
+            background: #4da674;
+            color: white;
+        }
+        .filter-btn.clear {
+            background: #6c757d;
+            color: white;
+        }
+        .filter-btn:hover {
+            transform: translateY(-1px);
+        }
+
     </style>
 </head>
 <body>
@@ -713,7 +877,7 @@
         </div>
         <ul class="sidebar-menu">
             <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-            <li><i class="fas fa-file-excel"></i> Excel Management</li>
+            <li><i class="fas fa-file-excel"></i>Import Excel</li>
             <li class="activeTab"><i class="fas fa-user"></i> Employees</li>
             <li><i class="fas fa-file-invoice"></i> Payslip Generator</li>
             <li><i class="fas fa-history"></i> Payslip History</li>
@@ -761,75 +925,110 @@
             </button>
         </div>
 
+
         <div class="main-content">
             <div id="viewTab" class="tab-content active">
-                <div class="main-wrapper-button">
-                    <div class="wrapper-button">
-                        <div class="button-group">
-                            <label for="department">Department</label>
-                            <select id="department" class="form-control" required>
-                                <option value="">Select Department</option>
-                                <option value="ADMIN">General Administration</option>
-                                <option value="AUXILLIARY">Auxialliary</option>
-                                <option value="ADVANCE">Advance Education</option>
-                                <option value="CEN">College of Engineering</option>
-                                <option value="CIT">College of Industrial Technology</option>
-                                <option value="CBA">College of Business Administration and Accountancy</option>
-                                <option value="CAS">College of Arts and Sciences</option>
-                                <option value="CAFA">College of Architecture and Fine Arts</option>
-                                <option value="CED">College of Education</option>
-                                <option value="PE">Physical Education</option>
-                                <option value="RESEARCH">Research</option>
-                                <option value="EXTENSION">Cavite Extension</option>
-                                <option value="TEMPO">Temporary Employee</option>
-                                <option value="N EMPLOYEE 3">New Employee Batch 3</option>
-                                <option value="N EMPLOYEE 4">New Employee Batch 4</option>
-                                <option value="N EMPLOYEE A">New Employee Batch A</option>
-                            </select> 
+
+            <div class="page-title">
+                <h1><i class="fas fa-chart-bar"></i> Comprehensive Employee Data</h1>
+                <button class="export-btn" onclick="exportToCSV()">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+            </div>
+
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="wrapper-icon">
+                        <div class="icon" style="color: #4da674;">
+                            <i class="fas fa-clipboard-list"></i>
                         </div>
-
-                        <div class="form-group">
-                            <label>Months</label>
-                            <div class="dropdown-checkbox">
-                                <button class="form-control dropdown-toggle" type="button" onclick="toggleMonthDropdown()">
-                                    Select Months <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu checkbox-menu" style="display:none;">
-                                    <li><label><input type="checkbox" value="JANUARY"> January</label></li>
-                                    <li><label><input type="checkbox" value="FEBRUARY"> February</label></li>
-                                    <li><label><input type="checkbox" value="MARCH"> March</label></li>
-                                    <li><label><input type="checkbox" value="APRIL"> April</label></li>
-                                    <li><label><input type="checkbox" value="MAY"> May</label></li>
-                                    <li><label><input type="checkbox" value="JUNE"> June</label></li>
-                                    <li><label><input type="checkbox" value="JULY"> July</label></li>
-                                    <li><label><input type="checkbox" value="AUGUST"> August</label></li>
-                                    <li><label><input type="checkbox" value="SEPTEMBER"> September</label></li>
-                                    <li><label><input type="checkbox" value="OCTOBER"> October</label></li>
-                                    <li><label><input type="checkbox" value="NOVEMBER"> November</label></li>
-                                    <li><label><input type="checkbox" value="DECEMBER"> December</label></li>
-                                </ul>
-                            </div>
-                            <input type="hidden" id="month" name="month" required>
-                        </div>
+                        <div class="number">342</div>
                     </div>
-
-               
-                    <div style="margin: 20px 0;">
-                        <label><strong>Search Name:</strong></label>
-                        <input type="text" id="nameFilter" placeholder="Enter name..." style="padding: 6px; width: 200px; margin-right: 20px;">
-
-                        <label><strong>Select Column:</strong></label>
-                        <select id="columnSelect" style="padding: 6px;">
-                            <option value="17">PhilHealth</option>
-                            <option value="2">Withholding Tax</option>
-                            <option value="1">Position</option>
-                        </select>
-                    </div>
-
-                    <button class="button-actions">Search</button>
-                    
+                    <div class="label">Total Employees</div>
                 </div>
+                <div class="stat-card">
+                    <div class="wrapper-icon">
+                        <div class="icon" style="color: #28a745;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="number">23</div>
+                    </div>
+                    <div class="label">Total Departments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="wrapper-icon">
+                        <div class="icon" style="color: #ffc107;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="number">45</div>
+                    </div>
+                    
+                    <div class="label">Total Payslips Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="wrapper-icon">
+                        <div class="icon" style="color: #17a2b8;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="number">12323</div>
+                    </div>
+                    
+                    <div class="label">Total Gross Salary</div>
+                </div>
+            </div>
 
+                <div class="filters-section">
+                    <div class="filters-title">Search Employee Data</div>
+                    <form method="GET" action="">
+                        <div class="filters-grid">
+                            <div class="filter-group">
+                                <label for="student">Department</label>
+                                <select name="student" id="student">
+                                    <option value="">Select Department</option>
+                                    <option value="ADMIN">General Administration</option>
+                                    <option value="AUXILLIARY">Auxialliary</option>
+                                    <option value="ADVANCE">Advance Education</option>
+                                    <option value="CEN">College of Engineering</option>
+                                    <option value="CIT">College of Industrial Technology</option>
+                                    <option value="CBA">College of Business Administration and Accountancy</option>
+                                    <option value="CAS">College of Arts and Sciences</option>
+                                    <option value="CAFA">College of Architecture and Fine Arts</option>
+                                    <option value="CED">College of Education</option>
+                                    <option value="PE">Physical Education</option>
+                                    <option value="RESEARCH">Research</option>
+                                    <option value="EXTENSION">Cavite Extension</option>
+                                    <option value="TEMPO">Temporary Employee</option>
+                                    <option value="N EMPLOYEE 3">New Employee Batch 3</option>
+                                    <option value="N EMPLOYEE 4">New Employee Batch 4</option>
+                                    <option value="N EMPLOYEE A">New Employee Batch A</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="grade">Month</label>
+                                <select name="grade" id="grade">
+                                    <option value="">Select Month</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-actions">
+                                <button type="submit" class="filter-btn apply">Search</button>
+                                <button type="button" class="filter-btn clear" onclick="clearFilters()">Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
                 <div class="table-wrapper">
                     <table class="table" id="employeeTable">
@@ -1196,7 +1395,7 @@
         document.querySelectorAll('.sidebar-menu li').forEach(item => {
                 item.addEventListener('click', function() {
                     if (this.textContent.includes('Dashboard')) window.location.href = 'dashboard.php';
-                    if (this.textContent.includes('Excel')) window.location.href = 'manage_excells.php';
+                    if (this.textContent.includes('Excel')) window.location.href = 'import_excel.php';
                     if (this.textContent.includes('Employees')) window.location.href = 'employee.php';
                     if (this.textContent.includes('Payslip Generator')) window.location.href = 'index.php';
                     if (this.textContent.includes('Payslip History')) window.location.href = 'payslip_history.php';

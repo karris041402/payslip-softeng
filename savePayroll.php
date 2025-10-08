@@ -1,5 +1,4 @@
 <?php
-// Enable error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -116,7 +115,7 @@ try {
 
     // Insert into remittance table using IDs
     $sqlRemittance = "INSERT INTO employeedataremittance (
-        name, position, witholdingTax, personalLifeRet, gsisSalaryLoan, gsisPolicyLoan,
+        name, position, withHoldingTax, personalLifeRet, gsisSalaryLoan, gsisPolicyLoan,
         gfal, cpl, mpl, mplLite, emergencyLoan, totalGsisDeds, pagibigFundCont,
         pagibig2, multiPurpLoan, pagibigCalamityLoan, totalPagibigDeds, philHealth,
         disallowance, landbankSalaryLoan, earistCreditCoop, feu, mtslaSalaryLoan,

@@ -62,7 +62,6 @@ function detectColumnHeaders($worksheet) {
         'rtIns' => ['RT. INS.'],
         'ec' => ['EC'],
         'pagibig' => ['PAGIBIG'],
-        
         'lifeRetirement' => ['PERSONAL LIFE/RET INS.'],
         'gsisSalaryLoan' => ['GSIS SALARY LOAN'],
         'gsisPolicyLoan' => ['GSIS POLICY LOAN', 'POLICY'],
@@ -92,7 +91,7 @@ function detectColumnHeaders($worksheet) {
         $combinedHeader = '';
         
         // Check rows 6-10 for headers
-        for ($row = 6; $row <= 10; $row++) {
+        for ($row = 7; $row <= 10; $row++) {
             $cell = $worksheet->getCell($colLetter . $row);
             $cellValue = strtoupper(trim((string) $cell->getCalculatedValue()));
             if (!empty($cellValue)) {

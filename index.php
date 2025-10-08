@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Payslip Management System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="EARIST_Logo (1).ico">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -761,7 +762,7 @@
         </div>
         <ul class="sidebar-menu">
             <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-            <li><i class="fas fa-file-excel"></i> Excel Management</li>
+            <li><i class="fas fa-file-excel"></i>Import Excel</li>
             <li><i class="fas fa-user"></i> Employees</li>
             <li class="activeTab"><i class="fas fa-file-invoice"></i> Payslip Generator</li>
             <li><i class="fas fa-history"></i> Payslip History</li>
@@ -776,7 +777,7 @@
         document.querySelectorAll('.sidebar-menu li').forEach(item => {
                 item.addEventListener('click', function() {
                     if (this.textContent.includes('Dashboard')) window.location.href = 'dashboard.php';
-                    if (this.textContent.includes('Excel')) window.location.href = 'manage_excells.php';
+                    if (this.textContent.includes('Excel')) window.location.href = 'import_excel.php';
                     if (this.textContent.includes('Employees')) window.location.href = 'employee.php';
                     if (this.textContent.includes('Payslip Generator')) window.location.href = 'index.php';
                     if (this.textContent.includes('Payslip History')) window.location.href = 'payslip_history.php';

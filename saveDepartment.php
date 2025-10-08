@@ -3,16 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$host = 'localhost';
-$user = 'root'; // change if needed
-$password = ''; // change if needed
-$db = 'payslip-generator';
-
-$conn = new mysqli($host, $user, $password, $db);
-
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_error);
-}
+require_once 'db.php';
 
 // Collect form data for payroll
 $department = $_POST['department'];
@@ -29,7 +20,7 @@ try {
     )";
 
     $stmtDepartment = $conn->prepare($sqlDepartment);
-    $sqlDepartment->bind_param(
+    $stmtDepartment->bind_param(
         "s",
         $department
     );

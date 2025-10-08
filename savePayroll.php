@@ -2,16 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$db = 'payslip-generator';
-
-$conn = new mysqli($host, $user, $password, $db);
-
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_error);
-}
+require_once 'db.php';
 
 // Collect form data for payroll
 $name = $_POST['name'];

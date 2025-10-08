@@ -756,7 +756,7 @@
 
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <img src="earist-logo.png" alt="Logo" class="sidebar-logo">
+            <img src="EARIST_Logo (1).png" alt="Logo" class="sidebar-logo">
             <span class="sidebar-title">HUMAN RESOURCES MANAGEMENT SYSTEM</span>
         </div>
         <ul class="sidebar-menu">

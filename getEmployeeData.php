@@ -1,15 +1,6 @@
 <?php
 // Database connection
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$dbname = 'payslip-generator';
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-if ($conn->connect_error) {
-    die(json_encode(['error' => 'Database connection failed: ' . $conn->connect_error]));
-}
-
+require_once 'db.php';
 // Query: join remittance + payroll tables
 $sql = "
 SELECT 

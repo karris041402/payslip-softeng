@@ -826,6 +826,7 @@
                         </select>
                     </div>
 
+                    <button class="button-actions">Search</button>
                     
                 </div>
 
@@ -892,11 +893,11 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="name">Employee Name *</label>
-                                <input type="text" id="name" name="name" required placeholder="Enter full name">
+                                <input type="text" id="name" name="name" required placeholder="Enter full name" required>
                             </div>
                             <div class="form-group">
                                 <label for="position">Position *</label>
-                                <input type="text" id="position" name="position" required placeholder="Enter position">
+                                <input type="text" id="position" name="position" required placeholder="Enter position" required>
                             </div>
                             <div class="form-group">
                                 <label for="department">Department</label>
@@ -947,105 +948,105 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="rateNbc594">rateNbc594</label>
-                                <input type="number" step="0.01" id="rateNbc594" name="rateNbc594" placeholder="0.00">
+                                <input type="number" step="0.01" id="rateNbc594" name="rateNbc594" placeholder="0.00" required>
                             </div>
                             <div class="form-group">
                                 <label for="nbcDiffl597">nbcDiff594</label>
-                                <input type="number" step="0.01" id="nbcDiff594" name="nbcDiffl597" placeholder="0.00">
+                                <input type="number" step="0.01" id="nbcDiff594" name="nbcDiffl597" placeholder="0.00" required>
                             </div>
                             <div class="form-group">
                                 <label for="increment">Increment</label>
-                                <input type="number" step="0.01" id="increment" name="increment" placeholder="0.00">
+                                <input type="number" step="0.01" id="increment" name="increment" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="grossSalary">Gross Salary</label>
-                                <input type="number" step="0.01" id="grossSalary" name="grossSalary" placeholder="0.00">
+                                <input type="number" step="0.01" id="grossSalary" name="grossSalary" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="absent">Absent</label>
-                                <input type="number" step="0.01" id="absent" name="absent" placeholder="0.00">
+                                <input type="number" step="0.01" id="absent" name="absent" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="days">Days</label>
-                                <input type="number" step="0.01" id="days" name="days" placeholder="0.00">
+                                <input type="number" step="0.01" id="days" name="days" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="hours">Hours</label>
-                                <input type="number" step="0.01" id="hours" name="hours" placeholder="0.00">
+                                <input type="number" step="0.01" id="hours" name="hours" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="minutes">Minutes</label>
-                                <input type="number" step="0.01" id="minutes" name="minutes" placeholder="0.00">
+                                <input type="number" step="0.01" id="minutes" name="minutes" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="withHoldingTax">Withholding Tax</label>
-                                <input type="number" step="0.01" id="withHoldingTax" name="withHoldingTax" placeholder="0.00">
+                                <input type="number" step="0.01" id="withHoldingTax" name="withHoldingTax" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalGsisDeds">Total GSIS Deductions</label>
-                                <input type="number" step="0.01" id="totalGsisDeds" name="totalGsisDeds" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalGsisDeds" name="totalGsisDeds" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalPagibigDeds">Total PAG-IBIG Deductions</label>
-                                <input type="number" step="0.01" id="totalPagibigDeds" name="totalPagibigDeds" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalPagibigDeds" name="totalPagibigDeds" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="philHealthEmployeeShare">PhilHealth Employee Share</label>
-                                <input type="number" step="0.01" id="philHealthEmployeeShare" name="philHealthEmployeeShare" placeholder="0.00">
+                                <input type="number" step="0.01" id="philHealthEmployeeShare" name="philHealthEmployeeShare" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalOtherDeds">Total Other Deductions</label>
-                                <input type="number" step="0.01" id="totalOtherDeds" name="totalOtherDeds" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalOtherDeds" name="totalOtherDeds" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalDeds">Total Deductions</label>
-                                <input type="number" step="0.01" id="totalDeds" name="totalDeds" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalDeds" name="totalDeds" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="pay1st">1st Pay</label>
-                                <input type="number" step="0.01" id="pay1st" name="pay1st" placeholder="0.00">
+                                <input type="number" step="0.01" id="pay1st" name="pay1st" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="pay2nd">2nd Pay</label>
-                                <input type="number" step="0.01" id="pay2nd" name="pay2nd" placeholder="0.00">
+                                <input type="number" step="0.01" id="pay2nd" name="pay2nd" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="rtIns">RT Insurance</label>
-                                <input type="number" step="0.01" id="rtIns" name="rtIns" placeholder="0.00">
+                                <input type="number" step="0.01" id="rtIns" name="rtIns" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="employeesCompensation">Employee's Compensation</label>
-                                <input type="number" step="0.01" id="employeesCompensation" name="employeesCompensation" placeholder="0.00">
+                                <input type="number" step="0.01" id="employeesCompensation" name="employeesCompensation" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="philHealthGovernmentShare">PhilHealth Government Share</label>
-                                <input type="number" step="0.01" id="philHealthGovernmentShare" name="philHealthGovernmentShare" placeholder="0.00">
+                                <input type="number" step="0.01" id="philHealthGovernmentShare" name="philHealthGovernmentShare" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="pagibig">PAG-IBIG</label>
-                                <input type="number" step="0.01" id="pagibig" name="pagibig" placeholder="0.00">
+                                <input type="number" step="0.01" id="pagibig" name="pagibig" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="netSalary">Net Salary</label>
-                                <input type="number" step="0.01" id="netSalary" name="netSalary" placeholder="0.00">
+                                <input type="number" step="0.01" id="netSalary" name="netSalary" placeholder="0.00" required>
                             </div>
 
                         </div>
@@ -1056,122 +1057,122 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="withholdingTax">Withholding Tax</label>
-                                <input type="number" step="0.01" id="withholdingTax" name="withholdingTaxRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="withholdingTax" name="withholdingTaxRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="personalLifeRet">Personal Life Retirement</label>
-                                <input type="number" step="0.01" id="personalLifeRet" name="personalLifeRetRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="personalLifeRet" name="personalLifeRetRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="gsisSalaryLoan">GSIS Salary Loan</label>
-                                <input type="number" step="0.01" id="gsisSalaryLoan" name="gsisSalaryLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="gsisSalaryLoan" name="gsisSalaryLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="gsisPolicyLoan">GSIS Policy Loan</label>
-                                <input type="number" step="0.01" id="gsisPolicyLoan" name="gsisPolicyLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="gsisPolicyLoan" name="gsisPolicyLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="gfal">GFAL</label>
-                                <input type="number" step="0.01" id="gfal" name="gfalRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="gfal" name="gfalRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="cpl">CPL</label>
-                                <input type="number" step="0.01" id="cpl" name="cplRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="cpl" name="cplRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="mpl">MPL</label>
-                                <input type="number" step="0.01" id="mpl" name="mplRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="mpl" name="mplRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="mplLite">MPL Lite</label>
-                                <input type="number" step="0.01" id="mplLite" name="mplLiteRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="mplLite" name="mplLiteRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="emergencyLoan">Emergency Loan</label>
-                                <input type="number" step="0.01" id="emergencyLoan" name="emergencyLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="emergencyLoan" name="emergencyLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalGsisDeds">Total GSIS Deductions</label>
-                                <input type="number" step="0.01" id="totalGsisDeds" name="totalGsisDedsRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalGsisDeds" name="totalGsisDedsRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="pagibigFundCont">PAG-IBIG Fund Contribution</label>
-                                <input type="number" step="0.01" id="pagibigFundCont" name="pagibigFundContRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="pagibigFundCont" name="pagibigFundContRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="pagibig2">PAG-IBIG 2</label>
-                                <input type="number" step="0.01" id="pagibig2" name="pagibig2Remit" placeholder="0.00">
+                                <input type="number" step="0.01" id="pagibig2" name="pagibig2Remit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="multiPurpLoan">Multi-Purpose Loan</label>
-                                <input type="number" step="0.01" id="multiPurpLoan" name="multiPurpLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="multiPurpLoan" name="multiPurpLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="pagibigCalamityLoan">PAG-IBIG Calamity Loan</label>
-                                <input type="number" step="0.01" id="pagibigCalamityLoan" name="pagibigCalamityLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="pagibigCalamityLoan" name="pagibigCalamityLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalPagibigDeds">Total PAG-IBIG Deductions</label>
-                                <input type="number" step="0.01" id="totalPagibigDeds" name="totalPagibigDedsRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalPagibigDeds" name="totalPagibigDedsRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="philHealth">PhilHealth</label>
-                                <input type="number" step="0.01" id="philHealth" name="philHealthRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="philHealth" name="philHealthRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="disallowance">Disallowance</label>
-                                <input type="number" step="0.01" id="disallowance" name="disallowanceRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="disallowance" name="disallowanceRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="landbankSalaryLoan">Landbank Salary Loan</label>
-                                <input type="number" step="0.01" id="landbankSalaryLoan" name="landbankSalaryLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="landbankSalaryLoan" name="landbankSalaryLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="earistCreditCoop">Earist Credit Coop</label>
-                                <input type="number" step="0.01" id="earistCreditCoop" name="earistCreditCoopRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="earistCreditCoop" name="earistCreditCoopRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="feu">FEU</label>
-                                <input type="number" step="0.01" id="feu" name="feuRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="feu" name="feuRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="mtslaSalaryLoan">MTSLA Salary Loan</label>
-                                <input type="number" step="0.01" id="mtslaSalaryLoan" name="mtslaSalaryLoanRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="mtslaSalaryLoan" name="mtslaSalaryLoanRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="esla">ESLA</label>
-                                <input type="number" step="0.01" id="esla" name="eslaRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="esla" name="eslaRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalOtherDeds">Total Other Deductions</label>
-                                <input type="number" step="0.01" id="totalOtherDeds" name="totalOtherDedsRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalOtherDeds" name="totalOtherDedsRemit" placeholder="0.00" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="totalDeds">Total Deductions</label>
-                                <input type="number" step="0.01" id="totalDeds" name="totalDedsRemit" placeholder="0.00">
+                                <input type="number" step="0.01" id="totalDeds" name="totalDedsRemit" placeholder="0.00" required>
                             </div>
 
                         </div>
@@ -1208,6 +1209,20 @@
             
         // Global employees array
         let employees = [];
+
+        async function loadEmployees() {
+            try {
+                const response = await fetch('getEmployeeData.php');
+                const data = await response.json();
+                employees = data;
+                renderEmployeeTable();
+            } catch (error) {
+                console.error('Error loading employees:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadEmployees);
+
 
         // Function to render employee table
         function renderEmployeeTable() {

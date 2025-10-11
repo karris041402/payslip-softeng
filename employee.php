@@ -867,9 +867,183 @@
             transform: translateY(-1px);
         }
 
+
+        .btn-edit, .btn-delete {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        /* Loading Animation Styles - Add to your <style> section */
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .loading-overlay {
+            background: rgba(24, 28, 35, 0.95);
+        }
+
+        .loading-content {
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(52, 152, 219, 0.1);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #3498db;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        body.dark-mode .loading-text {
+            color: #5dade2;
+        }
+
+        .loading-subtext {
+            font-size: 14px;
+            color: #7f8c8d;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        body.dark-mode .loading-subtext {
+            color: #95a5a6;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Table Loading State */
+        .table-loading {
+            position: relative;
+            min-height: 300px;
+        }
+
+        .table-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body.dark-mode .table-loading::before {
+            background: rgba(26, 35, 50, 0.8);
+        }
+
+        .inline-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(52, 152, 219, 0.2);
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            z-index: 11;
+        }
+
+        /* Skeleton Loading for Table */
+        .skeleton-row {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            height: 45px;
+        }
+
+        body.dark-mode .skeleton-row {
+            background: linear-gradient(90deg, #2c3e50 25%, #34495e 50%, #2c3e50 75%);
+            background-size: 200% 100%;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-cell {
+            padding: 12px;
+        }
+
+        .skeleton-content {
+            background: #e0e0e0;
+            height: 12px;
+            border-radius: 4px;
+            width: 80%;
+        }
+
+        body.dark-mode .skeleton-content {
+            background: #34495e;
+        }
     </style>
 </head>
 <body>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading Employee Data</div>
+            <div class="loading-subtext">Please wait while we fetch the information...</div>
+        </div>
+    </div>
+
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <img src="EARIST_Logo (1).png" alt="Logo" class="sidebar-logo">
@@ -891,7 +1065,7 @@
         <div class="popover-header">
             <h3 style="color: #3498db">Add New Department</h3>
             <button popovertarget="add-department-modal" popovertargetaction="hide" class="close-btn">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times"></i>    
             </button>
         </div>
         <form id="department-form"  method="POST" action="saveDepartment.php">
@@ -951,7 +1125,7 @@
                         <div class="icon" style="color: #28a745;">
                             <i class="fas fa-check-circle"></i>
                         </div>
-                        <div class="number">23</div>
+                        <div class="number" id="departments-number">23</div>
                     </div>
                     <div class="label">Total Departments</div>
                 </div>
@@ -960,7 +1134,7 @@
                         <div class="icon" style="color: #ffc107;">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <div class="number">45</div>
+                        <div id="payslip-number" class="number">45</div>
                     </div>
                     
                     <div class="label">Total Payslips Generated</div>
@@ -970,7 +1144,7 @@
                         <div class="icon" style="color: #17a2b8;">
                             <i class="fas fa-star"></i>
                         </div>
-                        <div class="number">12323</div>
+                        <div id="grossSalary-number" class="number">12323</div>
                     </div>
                     
                     <div class="label">Total Gross Salary</div>
@@ -983,29 +1157,29 @@
                         <div class="filters-grid">
                             <div class="filter-group">
                                 <label for="student">Department</label>
-                                <select name="student" id="student">
+                                <select name="department" id="department">
                                     <option value="">Select Department</option>
-                                    <option value="ADMIN">General Administration</option>
-                                    <option value="AUXILLIARY">Auxialliary</option>
-                                    <option value="ADVANCE">Advance Education</option>
-                                    <option value="CEN">College of Engineering</option>
-                                    <option value="CIT">College of Industrial Technology</option>
-                                    <option value="CBA">College of Business Administration and Accountancy</option>
-                                    <option value="CAS">College of Arts and Sciences</option>
-                                    <option value="CAFA">College of Architecture and Fine Arts</option>
-                                    <option value="CED">College of Education</option>
-                                    <option value="PE">Physical Education</option>
-                                    <option value="RESEARCH">Research</option>
-                                    <option value="EXTENSION">Cavite Extension</option>
-                                    <option value="TEMPO">Temporary Employee</option>
-                                    <option value="N EMPLOYEE 3">New Employee Batch 3</option>
-                                    <option value="N EMPLOYEE 4">New Employee Batch 4</option>
-                                    <option value="N EMPLOYEE A">New Employee Batch A</option>
+                                    <option value="General Administration">General Administration</option>
+                                    <option value="Auxiliary">Auxiliary</option>
+                                    <option value="Advance Education">Advance Education</option>
+                                    <option value="College of Engineering">College of Engineering</option>
+                                    <option value="College of Industrial Technology">College of Industrial Technology</option>
+                                    <option value="College of Business Administration and Accountancy">College of Business Administration and Accountancy</option>
+                                    <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                                    <option value="College of Architecture and Fine Arts">College of Architecture and Fine Arts</option>
+                                    <option value="College of Education">College of Education</option>
+                                    <option value="Physical Education">Physical Education</option>
+                                    <option value="Research">Research</option>
+                                    <option value="Cavite Extension">Cavite Extension</option>
+                                    <option value="Temporary Employee">Temporary Employee</option>
+                                    <option value="New Employee Batch 3">New Employee Batch 3</option>
+                                    <option value="New Employee Batch 4">New Employee Batch 4</option>
+                                    <option value="New Employee Batch A">New Employee Batch A</option>
                                 </select>
                             </div>
                             <div class="filter-group">
                                 <label for="grade">Month</label>
-                                <select name="grade" id="grade">
+                                <select name="month" id="month">
                                     <option value="">Select Month</option>
                                     <option value="January">January</option>
                                     <option value="February">February</option>
@@ -1019,6 +1193,15 @@
                                     <option value="October">October</option>
                                     <option value="November">November</option>
                                     <option value="December">December</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="dataType">Data Type</label>
+                                <select name="dataType" id="dataType">
+                                    <option value="">Select Type</option>
+                                    <option value="payroll">Payroll</option>
+                                    <option value="remittance">Remittance</option>
                                 </select>
                             </div>
 
@@ -1390,42 +1573,148 @@
     </div>
 
     <script>
-
-
-        document.querySelectorAll('.sidebar-menu li').forEach(item => {
-                item.addEventListener('click', function() {
-                    if (this.textContent.includes('Dashboard')) window.location.href = 'dashboard.php';
-                    if (this.textContent.includes('Excel')) window.location.href = 'import_excel.php';
-                    if (this.textContent.includes('Employees')) window.location.href = 'employee.php';
-                    if (this.textContent.includes('Payslip Generator')) window.location.href = 'index.php';
-                    if (this.textContent.includes('Payslip History')) window.location.href = 'payslip_history.php';
-                    if (this.textContent.includes('Reports')) window.location.href = 'reports.php';
-                    if (this.textContent.includes('Account Settings')) window.location.href = 'account_settings.php';
-                    if (this.classList.contains('mode-toggle')) toggleMode();
-                });
-            });
-        
-            
-        // Global employees array
         let employees = [];
+        let currentDataType = 'remittance';
+        let isLoading = false;
 
-        async function loadEmployees() {
-            try {
-                const response = await fetch('getEmployeeData.php');
-                const data = await response.json();
-                employees = data;
-                renderEmployeeTable();
-            } catch (error) {
-                console.error('Error loading employees:', error);
+        // Show loading overlay
+        function showLoadingOverlay() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadEmployees);
+        // Hide loading overlay
+        function hideLoadingOverlay() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        }
 
+        // Show table loading
+        function showTableLoading() {
+            const wrapper = document.querySelector('.table-wrapper');
+            const tbody = document.getElementById('employeeTableBody');
+            
+            wrapper.classList.add('table-loading');
+            
+            // Add inline spinner
+            if (!document.querySelector('.inline-spinner')) {
+                const spinner = document.createElement('div');
+                spinner.className = 'inline-spinner';
+                wrapper.appendChild(spinner);
+            }
+            
+            // Show skeleton rows
+            tbody.innerHTML = generateSkeletonRows(5);
+        }
 
-        // Function to render employee table
+        // Hide table loading
+        function hideTableLoading() {
+            const wrapper = document.querySelector('.table-wrapper');
+            const spinner = document.querySelector('.inline-spinner');
+            
+            wrapper.classList.remove('table-loading');
+            if (spinner) {
+                spinner.remove();
+            }
+        }
+
+        // Generate skeleton loading rows
+        function generateSkeletonRows(count) {
+            let rows = '';
+            for (let i = 0; i < count; i++) {
+                rows += `
+                    <tr class="skeleton-row">
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
+                    </tr>
+                `;
+            }
+            return rows;
+        }
+
+        async function loadEmployees(filters = {}) {
+            if (isLoading) return;
+            
+            isLoading = true;
+            showTableLoading();
+            
+            try {
+                const params = new URLSearchParams(filters);
+                const response = await fetch(`getEmployeeData.php?${params.toString()}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+
+                employees = data.employees;
+                currentDataType = data.dataType || 'remittance';
+                
+                // Update statistics with animation
+                animateValue('number', 0, data.totalEmployees, 1000);
+                animateValue('departments-number', 0, data.totalDepartments, 1000);
+                animateValue('payslip-number', 0, data.totalPayslip, 1000);
+                document.getElementById('grossSalary-number').textContent = data.totalGrossSalary;
+
+                // Small delay to show loading animation
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                renderEmployeeTable();
+            } catch (error) {
+                console.error('Error loading employees:', error);
+                showError('Failed to load employee data. Please try again.');
+            } finally {
+                isLoading = false;
+                hideTableLoading();
+            }
+        }
+
+        // Animate number counting
+        function animateValue(elementId, start, end, duration) {
+            const element = document.getElementById(elementId) || document.querySelector(`.${elementId}`);
+            if (!element) return;
+            
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(current);
+            }, 16);
+        }
+
+        // Show error message
+        function showError(message) {
+            const tbody = document.getElementById('employeeTableBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="26" style="text-align: center; padding: 40px; color: #e74c3c;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                        <strong>${message}</strong>
+                    </td>
+                </tr>
+            `;
+        }
+
         function renderEmployeeTable() {
             const tbody = document.getElementById('employeeTableBody');
+            const thead = document.querySelector('.table thead tr');
             const emptyState = document.getElementById('emptyState');
             
             if (employees.length === 0) {
@@ -1436,48 +1725,163 @@
             
             emptyState.style.display = 'none';
             
-            tbody.innerHTML = employees.map(employee => `
-                <tr>
-                    <td>${employee.name || ''}</td>
-                    <td>${employee.position || ''}</td>
-                    <td>${employee.withHoldingTax || '0.00'}</td>
-                    <td>${employee.personalLifeRetRemit || '0.00'}</td>
-                    <td>${employee.gsisSalaryLoanRemit || '0.00'}</td>
-                    <td>${employee.gsisPolicyLoanRemit || '0.00'}</td>
-                    <td>${employee.gfalRemit || '0.00'}</td>
-                    <td>${employee.cplRemit || '0.00'}</td>
-                    <td>${employee.mplRemit || '0.00'}</td>
-                    <td>${employee.mplLiteRemit || '0.00'}</td>
-                    <td>${employee.emergencyLoanRemit || '0.00'}</td>
-                    <td>${employee.totalGsisDedsRemit || '0.00'}</td>
-                    <td>${employee.pagibigFundContRemit || '0.00'}</td>
-                    <td>${employee.pagibig2Remit || '0.00'}</td>
-                    <td>${employee.multiPurpLoanRemit || '0.00'}</td>
-                    <td>${employee.pagibigCalamityLoanRemit || '0.00'}</td>
-                    <td>${employee.totalPagibigDedsRemit || '0.00'}</td>
-                    <td>${employee.philHealthRemit || '0.00'}</td>
-                    <td>${employee.disallowanceRemit || '0.00'}</td>
-                    <td>${employee.landbankSalaryLoanRemit || '0.00'}</td>
-                    <td>${employee.earistCreditCoopRemit || '0.00'}</td>
-                    <td>${employee.feuRemit || '0.00'}</td>
-                    <td>${employee.mtslaSalaryLoanRemit || '0.00'}</td>
-                    <td>${employee.eslaRemit || '0.00'}</td>
-                    <td>${employee.totalOtherDedsRemit || '0.00'}</td>
-                    <td>${employee.totalDedsRemit || '0.00'}</td>
-                    <td>
-                        <button class="btn-edit" onclick="editEmployee(${employees.indexOf(employee)})">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn-delete" onclick="deleteEmployee(${employees.indexOf(employee)})">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            // Update table headers based on data type
+            if (currentDataType === 'payroll') {
+                thead.innerHTML = `
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Rate NBC 594</th>
+                    <th>NBC Diff'l 597</th>
+                    <th>Increment</th>
+                    <th>Gross Salary</th>
+                    <th>Absent</th>
+                    <th>Days</th>
+                    <th>Hours</th>
+                    <th>Minutes</th>
+                    <th>Withholding Tax</th>
+                    <th>Total GSIS Deds</th>
+                    <th>Total PAG-IBIG Deds</th>
+                    <th>PhilHealth 1</th>
+                    <th>Total Other Deds</th>
+                    <th>Total Deds</th>
+                    <th>Pay 1st</th>
+                    <th>Pay 2nd</th>
+                    <th>RT INS</th>
+                    <th>Employee Compensation</th>
+                    <th>PhilHealth 2</th>
+                    <th>PAG-IBIG</th>
+                    <th>Net Salary</th>
+                    <th>Actions</th>
+                `;
+                
+                tbody.innerHTML = employees.map((employee, index) => `
+                    <tr style="animation: fadeIn 0.3s ease-in-out ${index * 0.05}s both;">
+                        <td><strong>${employee.name || ''}</strong></td>
+                        <td>${employee.position || ''}</td>
+                        <td>${employee.rateNbc594 || '0.00'}</td>
+                        <td>${employee.nbcDiffl597 || '0.00'}</td>
+                        <td>${employee.increment || '0.00'}</td>
+                        <td>${employee.grossSalary || '0.00'}</td>
+                        <td>${employee.absent || '0.00'}</td>
+                        <td>${employee.days || '0.00'}</td>
+                        <td>${employee.hours || '0.00'}</td>
+                        <td>${employee.minutes || '0.00'}</td>
+                        <td>${employee.withHoldingTax || '0.00'}</td>
+                        <td>${employee.totalGsisDeds || '0.00'}</td>
+                        <td>${employee.totalPagibigDeds || '0.00'}</td>
+                        <td>${employee.philHealthEmployeeShare || '0.00'}</td>
+                        <td>${employee.totalOtherDeds || '0.00'}</td>
+                        <td>${employee.totalDeds || '0.00'}</td>
+                        <td>${employee.pay1st || '0.00'}</td>
+                        <td>${employee.pay2nd || '0.00'}</td>
+                        <td>${employee.rtIns || '0.00'}</td>
+                        <td>${employee.employeesCompensation || '0.00'}</td>
+                        <td>${employee.philHealthGovernmentShare || '0.00'}</td>
+                        <td>${employee.pagibig || '0.00'}</td>
+                        <td>${employee.netSalary || '0.00'}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editEmployee(${index})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-delete" onclick="deleteEmployee(${index}, ${employee.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                // Remittance table
+                thead.innerHTML = `
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Withholding Tax</th>
+                    <th>Personal Life Ret</th>
+                    <th>GSIS Salary Loan</th>
+                    <th>GSIS Policy Loan</th>
+                    <th>GFAL</th>
+                    <th>CPL</th>
+                    <th>MPL</th>
+                    <th>MPL Lite</th>
+                    <th>Emergency Loan</th>
+                    <th>Total GSIS Deds</th>
+                    <th>PAG-IBIG Fund Cont</th>
+                    <th>PAG-IBIG 2</th>
+                    <th>Multi-Purpose Loan</th>
+                    <th>PAG-IBIG Calamity Loan</th>
+                    <th>Total PAG-IBIG Deds</th>
+                    <th>PhilHealth 3</th>
+                    <th>Disallowance</th>
+                    <th>Landbank Salary Loan</th>
+                    <th>Earist Credit Coop</th>
+                    <th>FEU</th>
+                    <th>MTSLA Salary Loan</th>
+                    <th>ESLA</th>
+                    <th>Total Other Deds</th>
+                    <th>Total Deds</th>
+                    <th>Actions</th>
+                `;
+                
+                tbody.innerHTML = employees.map((employee, index) => `
+                    <tr style="animation: fadeIn 0.3s ease-in-out ${index * 0.05}s both;">
+                        <td><strong>${employee.name || ''}</strong></td>
+                        <td>${employee.position || ''}</td>
+                        <td>${employee.withHoldingTax || '0.00'}</td>
+                        <td>${employee.personalLifeRet || '0.00'}</td>
+                        <td>${employee.gsisSalaryLoan || '0.00'}</td>
+                        <td>${employee.gsisPolicyLoan || '0.00'}</td>
+                        <td>${employee.gfal || '0.00'}</td>
+                        <td>${employee.cpl || '0.00'}</td>
+                        <td>${employee.mpl || '0.00'}</td>
+                        <td>${employee.mplLite || '0.00'}</td>
+                        <td>${employee.emergencyLoan || '0.00'}</td>
+                        <td>${employee.totalGsisDeds || '0.00'}</td>
+                        <td>${employee.pagibigFundCont || '0.00'}</td>
+                        <td>${employee.pagibig2 || '0.00'}</td>
+                        <td>${employee.multiPurpLoan || '0.00'}</td>
+                        <td>${employee.pagibigCalamityLoan || '0.00'}</td>
+                        <td>${employee.totalPagibigDeds || '0.00'}</td>
+                        <td>${employee.philHealth || '0.00'}</td>
+                        <td>${employee.disallowance || '0.00'}</td>
+                        <td>${employee.landbankSalaryLoan || '0.00'}</td>
+                        <td>${employee.earistCreditCoop || '0.00'}</td>
+                        <td>${employee.feu || '0.00'}</td>
+                        <td>${employee.mtslaSalaryLoan || '0.00'}</td>
+                        <td>${employee.esla || '0.00'}</td>
+                        <td>${employee.totalOtherDeds || '0.00'}</td>
+                        <td>${employee.totalDeds || '0.00'}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editEmployee(${index})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-delete" onclick="deleteEmployee(${index}, ${employee.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
         }
 
+        // Handle filter form submission
+        document.querySelector('.filters-section form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const filters = {
+                department: document.getElementById('department').value,
+                month: document.getElementById('month').value,
+                dataType: document.getElementById('dataType').value
+            };
+            
+            loadEmployees(filters);
+        });
 
-        // Tab switching functionality
+        function clearFilters() {
+            document.getElementById('department').value = '';
+            document.getElementById('month').value = '';
+            document.getElementById('dataType').value = '';
+            loadEmployees();
+        }
+
         function switchTab(tab) {
             const viewTab = document.getElementById('viewTab');
             const addTab = document.getElementById('addTab');
@@ -1496,126 +1900,139 @@
             }
         }
 
-        // Dark mode toggle
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
         }
+        
 
         document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('themeMode');
-            if (savedTheme === 'dark') {
+            // Show initial loading overlay
+            showLoadingOverlay();
+            
+            if (localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
             }
-        }); 
+            
+            // Load employees on page load
+            setTimeout(() => {
+                hideLoadingOverlay();
+                loadEmployees();
+            }, 800);
+            
+            // Load departments dynamically
+            fetch('get_departments.php')
+                .then(res => res.json())
+                .then(data => {
+                    const deptSelects = document.querySelectorAll('#department, select[name="department"]');
+                    deptSelects.forEach(select => {
+                        const currentValue = select.value;
+                        select.innerHTML = '<option value="">Select Department</option>';
+                        data.departments.forEach(dept => {
+                            select.innerHTML += `<option value="${dept.department_name}">${dept.department_name}</option>`;
+                        });
+                        if (currentValue) select.value = currentValue;
+                    });
+                });
+        });
 
-        // Load dark mode preference
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-        }
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-menu li').forEach(item => {
+            item.addEventListener('click', function() {
+                if (this.textContent.includes('Dashboard')) window.location.href = 'dashboard.php';
+                if (this.textContent.includes('Excel')) window.location.href = 'import_excel.php';
+                if (this.textContent.includes('Employees')) window.location.href = 'employee.php';
+                if (this.textContent.includes('Payslip Generator')) window.location.href = 'index.php';
+                if (this.textContent.includes('Payslip History')) window.location.href = 'payslip_history.php';
+                if (this.textContent.includes('Reports')) window.location.href = 'reports.php';
+                if (this.classList.contains('mode-toggle')) toggleDarkMode();
+            });
+        });
 
-        // Form submission
         // Form submission
         document.getElementById('employeeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const formData = new FormData(e.target);
-            const employee = {};
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
             
-            // Convert FormData to object
-            formData.forEach((value, key) => {
-                employee[key] = value || '0.00';
-            });
-
-            // Add to local array for immediate display
-            employees.push(employee);
-            renderEmployeeTable();
-            resetForm();
-            switchTab('view');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
             
-            // Send data to PHP backend
             fetch('savePayroll.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams(formData)
+                body: formData
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
+            .then(response => response.text())
             .then(data => {
                 console.log('Success:', data);
                 alert('Employee added successfully!');
+                resetForm();
+                switchTab('view');
+                loadEmployees();
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error saving employee data. Please try again.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             });
         });
 
-
-
-        document.getElementById('department-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Send data to PHP backend
-            fetch('saveDepartment.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams(formData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(data => {
-                console.log('Success:', data);
-                alert('Department added successfully!');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error saving employee data. Please try again.');
-            });
-        });
-
-
-        
-
-        // Reset form
         function resetForm() {
             document.getElementById('employeeForm').reset();
         }
 
-        // Delete employee
-        function deleteEmployee(index) {
+        function deleteEmployee(index, id) {
             if (confirm('Are you sure you want to delete this employee?')) {
-                employees.splice(index, 1);
-                renderEmployeeTable();
+                showTableLoading();
+                
+                fetch(`deleteEmployee.php?id=${id}&type=${currentDataType}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Employee deleted successfully!');
+                        loadEmployees();
+                    } else {
+                        alert('Error deleting employee');
+                        hideTableLoading();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting employee');
+                    hideTableLoading();
+                });
             }
         }
 
-        // Initial render
-        renderEmployeeTable();
-
-
-
-        // Add this script in employee.php
-        fetch('get_departments.php')
-            .then(res => res.json())
-            .then(data => {
-                const deptSelect = document.getElementById('department');
-                deptSelect.innerHTML = '<option value="">Select Department</option>';
-                data.departments.forEach(dept => {
-                    deptSelect.innerHTML += `<option value="${dept.department_name}">${dept.department_name}</option>`;
-                });
+        function exportToCSV() {
+            if (employees.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            let csv = '';
+            const headers = Array.from(document.querySelectorAll('.table thead th')).map(th => th.textContent);
+            csv += headers.join(',') + '\n';
+            
+            employees.forEach(employee => {
+                const row = Object.values(employee).map(val => `"${val}"`).join(',');
+                csv += row + '\n';
             });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `employees_${currentDataType}_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
     </script>
 </body>
 </html>

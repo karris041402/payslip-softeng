@@ -6,6 +6,9 @@
     <title>Employee Management System</title>
     <link rel="icon" type="image/x-icon" href="EARIST_Logo (1).ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  
     <style>
         * {
             margin: 0;
@@ -283,7 +286,7 @@
             background: linear-gradient(180deg, rgba(44, 62, 80, 0.98) 0%, rgba(52, 73, 94, 0.98) 100%);
             color: #fff;
             box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-            z-index: 999;
+            z-index: 10000;
             display: flex;
             flex-direction: column;
             padding-top: 0;
@@ -430,7 +433,7 @@
 
         .table td {
             border-right: solid 1px rgba(23, 28, 48, 0.5);
-            padding: 12px;
+            padding: 2px 12px;
             text-align: left;
             font-size: 13px;
             white-space: nowrap;
@@ -438,6 +441,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             transition: background 0.2s ease;
+        }
+
+        body.dark-mode .table tbody tr{
+             background: rgba(52, 152, 219, 0.1) !important;
         }
 
         .table tbody tr {
@@ -898,6 +905,8 @@
 
         /* Loading Animation Styles - Add to your <style> section */
 
+       /* Loading Animation Styles - Add to your <style> section */
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -918,6 +927,7 @@
 
         .loading-content {
             text-align: center;
+            margin-left: 200px;
             animation: fadeIn 0.3s ease-in-out;
         }
 
@@ -1026,7 +1036,6 @@
             background: #e0e0e0;
             height: 12px;
             border-radius: 4px;
-            width: 80%;
         }
 
         body.dark-mode .skeleton-content {
@@ -1105,8 +1114,8 @@
 
             <div class="page-title">
                 <h1><i class="fas fa-chart-bar"></i> Comprehensive Employee Data</h1>
-                <button class="export-btn" onclick="exportToCSV()">
-                    <i class="fas fa-download"></i> Export CSV
+                <button class="export-btn" onclick="exportToExcel()">
+                    <i class="fas fa-download"></i> Export to Excel
                 </button>
             </div>
 
@@ -1243,6 +1252,8 @@
                                 <th>ESLA</th>
                                 <th>Total Other Deductions</th>
                                 <th>Total Deductions</th>
+                                <th>Month</th>
+                                <th>Department</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>    
@@ -1600,11 +1611,11 @@
             
             wrapper.classList.add('table-loading');
             
-            // Add inline spinner
-            if (!document.querySelector('.inline-spinner')) {
-                const spinner = document.createElement('div');
-                spinner.className = 'inline-spinner';
-                wrapper.appendChild(spinner);
+            // Add loading content with text
+            if (!document.querySelector('.table-loading-content')) {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'table-loading-content';
+                wrapper.appendChild(loadingDiv);
             }
             
             // Show skeleton rows
@@ -1614,33 +1625,30 @@
         // Hide table loading
         function hideTableLoading() {
             const wrapper = document.querySelector('.table-wrapper');
-            const spinner = document.querySelector('.inline-spinner');
+            const loadingContent = document.querySelector('.table-loading-content');
             
             wrapper.classList.remove('table-loading');
-            if (spinner) {
-                spinner.remove();
+            if (loadingContent) {
+                loadingContent.remove();
             }
         }
 
         // Generate skeleton loading rows
         function generateSkeletonRows(count) {
-            let rows = '';
-            for (let i = 0; i < count; i++) {
-                rows += `
-                    <tr class="skeleton-row">
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                        <td class="skeleton-cell"><div class="skeleton-content"></div></td>
-                    </tr>
-                `;
+        // Get the number of columns from current table
+        const headers = document.querySelectorAll('.table thead th');
+        const colCount = headers.length || 28; // Default to 28 if headers not available
+        
+        let rows = '';
+        for (let i = 0; i < count; i++) {
+            rows += '<tr class="skeleton-row">';
+            for (let j = 0; j < colCount; j++) {
+                rows += '<td class="skeleton-cell"><div class="skeleton-content"></div></td>';
             }
-            return rows;
+            rows += '</tr>';
         }
+        return rows;
+    }
 
         async function loadEmployees(filters = {}) {
             if (isLoading) return;
@@ -1704,7 +1712,7 @@
             const tbody = document.getElementById('employeeTableBody');
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="26" style="text-align: center; padding: 40px; color: #e74c3c;">
+                    <td colspan="27" style="text-align: center; padding: 40px; color: #e74c3c;">
                         <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
                         <strong>${message}</strong>
                     </td>
@@ -1728,6 +1736,7 @@
             // Update table headers based on data type
             if (currentDataType === 'payroll') {
                 thead.innerHTML = `
+                    <th>#</th>
                     <th>Name</th>
                     <th>Position</th>
                     <th>Rate NBC 594</th>
@@ -1751,11 +1760,14 @@
                     <th>PhilHealth 2</th>
                     <th>PAG-IBIG</th>
                     <th>Net Salary</th>
+                    <th>Month</th>
+                    <th>Department</th>
                     <th>Actions</th>
                 `;
                 
                 tbody.innerHTML = employees.map((employee, index) => `
                     <tr style="animation: fadeIn 0.3s ease-in-out ${index * 0.05}s both;">
+                        <td><strong>${index + 1}</strong></td>
                         <td><strong>${employee.name || ''}</strong></td>
                         <td>${employee.position || ''}</td>
                         <td>${employee.rateNbc594 || '0.00'}</td>
@@ -1779,6 +1791,8 @@
                         <td>${employee.philHealthGovernmentShare || '0.00'}</td>
                         <td>${employee.pagibig || '0.00'}</td>
                         <td>${employee.netSalary || '0.00'}</td>
+                        <td>${employee.month_name || '0.00'}</td>
+                        <td>${employee.department_name || '0.00'}</td>
                         <td>
                             <button class="btn-edit" onclick="editEmployee(${index})">
                                 <i class="fas fa-edit"></i> Edit
@@ -1792,6 +1806,7 @@
             } else {
                 // Remittance table
                 thead.innerHTML = `
+                    <th>#</th>
                     <th>Name</th>
                     <th>Position</th>
                     <th>Withholding Tax</th>
@@ -1818,11 +1833,14 @@
                     <th>ESLA</th>
                     <th>Total Other Deds</th>
                     <th>Total Deds</th>
+                    <th>Month</th>
+                    <th>Department</th>
                     <th>Actions</th>
                 `;
                 
                 tbody.innerHTML = employees.map((employee, index) => `
                     <tr style="animation: fadeIn 0.3s ease-in-out ${index * 0.05}s both;">
+                        <td><strong>${index + 1}</strong></td>
                         <td><strong>${employee.name || ''}</strong></td>
                         <td>${employee.position || ''}</td>
                         <td>${employee.withHoldingTax || '0.00'}</td>
@@ -1849,6 +1867,8 @@
                         <td>${employee.esla || '0.00'}</td>
                         <td>${employee.totalOtherDeds || '0.00'}</td>
                         <td>${employee.totalDeds || '0.00'}</td>
+                        <td>${employee.month_name || '0.00'}</td>
+                        <td>${employee.department_name || '0.00'}</td>
                         <td>
                             <button class="btn-edit" onclick="editEmployee(${index})">
                                 <i class="fas fa-edit"></i> Edit
@@ -1900,19 +1920,9 @@
             }
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        }
-        
-
         document.addEventListener('DOMContentLoaded', function() {
             // Show initial loading overlay
             showLoadingOverlay();
-            
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-            }
             
             // Load employees on page load
             setTimeout(() => {
@@ -1945,9 +1955,10 @@
                 if (this.textContent.includes('Payslip Generator')) window.location.href = 'index.php';
                 if (this.textContent.includes('Payslip History')) window.location.href = 'payslip_history.php';
                 if (this.textContent.includes('Reports')) window.location.href = 'reports.php';
-                if (this.classList.contains('mode-toggle')) toggleDarkMode();
+                if (this.classList.contains('mode-toggle')) toggleMode();
             });
         });
+        
 
         // Form submission
         document.getElementById('employeeForm').addEventListener('submit', function(e) {
@@ -1968,7 +1979,7 @@
             .then(data => {
                 console.log('Success:', data);
                 alert('Employee added successfully!');
-                resetForm();
+                resetForm(); 
                 switchTab('view');
                 loadEmployees();
             })
@@ -2011,28 +2022,328 @@
             }
         }
 
-        function exportToCSV() {
+        async function exportToExcel() {
+            // ✅ 1️⃣ Basic Validation
             if (employees.length === 0) {
                 alert('No data to export');
                 return;
             }
-            
-            let csv = '';
-            const headers = Array.from(document.querySelectorAll('.table thead th')).map(th => th.textContent);
-            csv += headers.join(',') + '\n';
-            
-            employees.forEach(employee => {
-                const row = Object.values(employee).map(val => `"${val}"`).join(',');
-                csv += row + '\n';
+
+            // ✅ 2️⃣ Group employees by month
+            const employeesByMonth = {};
+            employees.forEach(emp => {
+                const monthName = emp.month_name || 'Unknown Month';
+                if (!employeesByMonth[monthName]) {
+                    employeesByMonth[monthName] = [];
+                }
+                employeesByMonth[monthName].push(emp);
             });
-            
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `employees_${currentDataType}_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
+
+            // ✅ 3️⃣ Get filter info
+            const currentDate = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            const department = document.getElementById('department').value || 'All Departments';
+            const filterMonth = document.getElementById('month').value || 'All Months';
+
+            // ✅ 4️⃣ Create Workbook
+            const workbook = new ExcelJS.Workbook();
+
+            // ✅ 5️⃣ Define reusable styles
+            const titleFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3498DB' } };
+            const headerFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2C3E50' } };
+            const altFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8F9FA' } };
+            const borderAll = { 
+                top: { style: 'thin' }, 
+                left: { style: 'thin' }, 
+                bottom: { style: 'thin' }, 
+                right: { style: 'thin' } 
+            };
+
+            // ✅ 6️⃣ Loop through each month and create a sheet
+            for (const [monthName, monthEmployees] of Object.entries(employeesByMonth)) {
+                // Create sheet for this month
+                const sheet = workbook.addWorksheet(monthName);
+
+
+                // Load logo image (local or base64)
+                const logoUrl = 'EARIST_Logo (1).png'; // relative path to your logo file
+
+                try {
+                    const response = await fetch(logoUrl);
+                    const imageBuffer = await response.arrayBuffer();
+
+                    // Register image
+                    const logoId = workbook.addImage({
+                        buffer: imageBuffer,
+                        extension: 'png', // or 'jpeg'
+                    });
+
+                    // Add to sheet (left corner)
+                    sheet.addImage(logoId, {
+                        tl: { col:10, row: 2 }, // top-left position
+                        ext: { width: 100, height: 100 } // size in pixels
+                    });
+                } catch (err) {
+                    console.warn('⚠️ Could not load logo:', err);
+                }
+
+
+                // =============================
+                // 📋 TITLE SECTION
+                // =============================
+                sheet.mergeCells('A1:AA1');
+                const titleRow = sheet.getCell('A1');
+                titleRow.value = `EMPLOYEE ${currentDataType.toUpperCase()} REPORT`;
+                titleRow.font = { bold: true, size: 14, color: { argb: 'FFFFFFFF' } };
+                titleRow.alignment = { horizontal: 'center', vertical: 'middle' };
+                titleRow.fill = titleFill;
+
+                // Subtitles
+                sheet.mergeCells('A3:AA3');
+                sheet.getCell('A3').value = `REPUBLIC OF THE PHILIPPINES`;
+                sheet.getCell('A3').alignment = { horizontal: 'center' };
+
+                sheet.mergeCells('A4:AA4');
+                sheet.getCell('A4').value = `STATE UNIVERSITIES AND COLLEGES`;
+                sheet.getCell('A4').alignment = { horizontal: 'center' };
+
+                sheet.mergeCells('A5:AA5');
+                sheet.getCell('A5').value = `PAYROLL REGISTER FOR REGULAR EMPLOYEES`;
+                sheet.getCell('A5').alignment = { horizontal: 'center' };
+
+                sheet.mergeCells('A6:AA6');
+                sheet.getCell('A6').value = `${monthName.toUpperCase()} 1 - 30, 2025`;
+                sheet.getCell('A6').alignment = { horizontal: 'center' };
+                sheet.getCell('A6').font = { bold: true };
+                
+                sheet.mergeCells('A7:AA7');
+                sheet.getCell('A7').value = `${department.toUpperCase()}`;
+                sheet.getCell('A7').alignment = { horizontal: 'center' };
+                sheet.getCell('A7').font = { bold: true };
+
+                sheet.addRow([]);
+                sheet.addRow([]); // Empty row for spacing
+
+                // =============================
+                // 🧱 HEADER ROW
+                // =============================
+                const headers = Array.from(document.querySelectorAll('.table thead th')).map(th => th.textContent.trim());
+                const headersPop = headers.slice(0, -3).map(h => ` ${h}`); // Remove last 3 columns (Month, Dept, Actions)
+
+                const headerRowNumber = 10;
+                const headerRow = sheet.addRow(headersPop);
+                headerRow.height = 40; // ✅ Increased height for wrapped text
+
+                // ✅ Set column widths (para hindi sobrang haba)
+                sheet.columns = headersPop.map(() => ({ width: 10 })); // 15 characters wide per column
+
+                headerRow.eachCell((cell, colNumber) => {
+                    const isEven = colNumber % 2 === 0;
+
+                    // Merge vertically for header
+                    sheet.mergeCells(headerRowNumber, colNumber, headerRowNumber + 1, colNumber);
+
+                    // Style settings
+                    cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 9 };
+                    cell.alignment = { 
+                        horizontal: 'center', 
+                        vertical: 'middle', 
+                        wrapText: true  // ✅ Enable text wrapping
+                    };
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: isEven ? '0F243E' : '16355A' }
+                    };
+                    cell.border = borderAll;
+                });
+
+                // ✅ ADD BLANK ROW AFTER HEADER for spacing
+                const blankRow = sheet.addRow([]);
+                blankRow.height = 10; // Small spacing row
+
+                // =============================
+                // 👨‍💼 EMPLOYEE DATA ROWS (for this month only)
+                // =============================
+                monthEmployees.forEach((employee, index) => {
+                    const rowData = [index + 1]; // Row number
+
+                    if (currentDataType === 'payroll') {
+                        rowData.push(
+                            employee.name || '',
+                            employee.position || '',
+                            employee.rateNbc594 || '0.00',
+                            employee.nbcDiffl597 || '0.00',
+                            employee.increment || '0.00',
+                            employee.grossSalary || '0.00',
+                            employee.absent || '0.00',
+                            employee.days || '0.00',
+                            employee.hours || '0.00',
+                            employee.minutes || '0.00',
+                            employee.withHoldingTax || '0.00',
+                            employee.totalGsisDeds || '0.00',
+                            employee.totalPagibigDeds || '0.00',
+                            employee.philHealthEmployeeShare || '0.00',
+                            employee.totalOtherDeds || '0.00',
+                            employee.totalDeds || '0.00',
+                            employee.pay1st || '0.00',
+                            employee.pay2nd || '0.00',
+                            employee.rtIns || '0.00',
+                            employee.employeesCompensation || '0.00',
+                            employee.philHealthGovernmentShare || '0.00',
+                            employee.pagibig || '0.00',
+                            employee.netSalary || '0.00'
+                        );
+                    } else {
+                        rowData.push(
+                            employee.name || '',
+                            employee.position || '',
+                            employee.withHoldingTax || '0.00',
+                            employee.personalLifeRet || '0.00',
+                            employee.gsisSalaryLoan || '0.00',
+                            employee.gsisPolicyLoan || '0.00',
+                            employee.gfal || '0.00',
+                            employee.cpl || '0.00',
+                            employee.mpl || '0.00',
+                            employee.mplLite || '0.00',
+                            employee.emergencyLoan || '0.00',
+                            employee.totalGsisDeds || '0.00',
+                            employee.pagibigFundCont || '0.00',
+                            employee.pagibig2 || '0.00',
+                            employee.multiPurpLoan || '0.00',
+                            employee.pagibigCalamityLoan || '0.00',
+                            employee.totalPagibigDeds || '0.00',
+                            employee.philHealth || '0.00',
+                            employee.disallowance || '0.00',
+                            employee.landbankSalaryLoan || '0.00',
+                            employee.earistCreditCoop || '0.00',
+                            employee.feu || '0.00',
+                            employee.mtslaSalaryLoan || '0.00',
+                            employee.esla || '0.00',
+                            employee.totalOtherDeds || '0.00',
+                            employee.totalDeds || '0.00'
+                        );
+                    }
+
+                    const row = sheet.addRow(rowData);
+                    const isAlt = index % 2 === 0;
+
+                    row.eachCell((cell, colNumber) => {
+                        cell.alignment = { horizontal: 'center' };
+                        cell.border = borderAll;
+
+                        if (isAlt) cell.fill = altFill;
+
+                        // Number formatting
+                        if (colNumber !== 1 && colNumber !== 2 && colNumber !== 3 && !isNaN(cell.value) && cell.value !== '') {
+                            cell.numFmt = '#,##0.00';
+                        }
+                    });
+                });
+
+                // =============================
+                // 🖋️ SIGNATURE SECTION
+                // =============================
+                const lastRow = sheet.lastRow.number + 2;
+
+                // Labels
+                sheet.mergeCells(`B${lastRow}:D${lastRow}`);
+                sheet.getCell(`B${lastRow}`).value = 'Prepared by:';
+                sheet.getCell(`B${lastRow}`).alignment = { horizontal: 'center' };
+
+                sheet.mergeCells(`G${lastRow}:I${lastRow}`);
+                sheet.getCell(`G${lastRow}`).value = 'Certified Correct:';
+                sheet.getCell(`G${lastRow}`).alignment = { horizontal: 'center' };
+
+                sheet.mergeCells(`L${lastRow}:N${lastRow}`);
+                sheet.getCell(`L${lastRow}`).value = 'Funds Available:';
+                sheet.getCell(`L${lastRow}`).alignment = { horizontal: 'center' };
+
+                sheet.mergeCells(`Q${lastRow}:S${lastRow}`);
+                sheet.getCell(`Q${lastRow}`).value = 'Approved for Payment:';
+                sheet.getCell(`Q${lastRow}`).alignment = { horizontal: 'center' };
+
+                // Names
+                const nameRow = lastRow + 2;
+                sheet.mergeCells(`B${nameRow}:D${nameRow}`);
+                sheet.getCell(`B${nameRow}`).value = 'MARJORIE E. ONDRA';
+                sheet.getCell(`B${nameRow}`).alignment = { horizontal: 'center' };
+                sheet.getCell(`B${nameRow}`).font = { bold: true };
+
+                sheet.mergeCells(`G${nameRow}:I${nameRow}`);
+                sheet.getCell(`G${nameRow}`).value = 'AMPARO M. MORALES';
+                sheet.getCell(`G${nameRow}`).alignment = { horizontal: 'center' };
+                sheet.getCell(`G${nameRow}`).font = { bold: true };
+
+                sheet.mergeCells(`L${nameRow}:N${nameRow}`);
+                sheet.getCell(`L${nameRow}`).value = 'YOLANDA A. LARA';
+                sheet.getCell(`L${nameRow}`).alignment = { horizontal: 'center' };
+                sheet.getCell(`L${nameRow}`).font = { bold: true };
+
+                sheet.mergeCells(`Q${nameRow}:S${nameRow}`);
+                sheet.getCell(`Q${nameRow}`).value = 'ROGELIO T. MAMARADLO';
+                sheet.getCell(`Q${nameRow}`).alignment = { horizontal: 'center' };
+                sheet.getCell(`Q${nameRow}`).font = { bold: true };
+
+                // Titles/Positions
+                const titleRowNum = nameRow + 1;
+                sheet.mergeCells(`B${titleRowNum}:D${titleRowNum}`);
+                sheet.getCell(`B${titleRowNum}`).value = 'Staff, HRMS';
+                sheet.getCell(`B${titleRowNum}`).alignment = { horizontal: 'center' };
+
+                sheet.mergeCells(`G${titleRowNum}:I${titleRowNum}`);
+                sheet.getCell(`G${titleRowNum}`).value = 'Chief, HRMS';
+                sheet.getCell(`G${titleRowNum}`).alignment = { horizontal: 'center' };
+
+                sheet.mergeCells(`L${titleRowNum}:N${titleRowNum}`);
+                sheet.getCell(`L${titleRowNum}`).value = 'Director, FMS';
+                sheet.getCell(`L${titleRowNum}`).alignment = { horizontal: 'center' };
+
+                sheet.mergeCells(`Q${titleRowNum}:S${titleRowNum}`);
+                sheet.getCell(`Q${titleRowNum}`).value = 'President';
+                sheet.getCell(`Q${titleRowNum}`).alignment = { horizontal: 'center' };
+
+                // Total records footer
+                const footerRow = titleRowNum + 3;
+                sheet.mergeCells(`B${footerRow}:E${footerRow}`);
+                sheet.getCell(`B${footerRow}`).value = `Total Records for ${monthName}: ${monthEmployees.length}`;
+                sheet.getCell(`B${footerRow}`).font = { bold: true };
+                sheet.getCell(`B${footerRow}`).alignment = { horizontal: 'left' };
+            }
+
+            // =============================
+            // 💾 EXPORT FILE
+            // =============================
+            const cleanDept = department.replace(/[^a-z0-9]/gi, '_');
+            const cleanMonth = filterMonth.replace(/[^a-z0-9]/gi, '_');
+            const dateStr = new Date().toISOString().split('T')[0];
+            const filename = `Employee_${currentDataType}_${cleanDept}_${cleanMonth}_${dateStr}.xlsx`;
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            saveAs(new Blob([buffer]), filename);
+
+            // Show success message
+            const totalSheets = Object.keys(employeesByMonth).length;
+            alert(`✅ Successfully exported ${employees.length} employees across ${totalSheets} sheet(s)!`);
+            console.log(`Exported to: ${filename}`);
         }
+
+
+
+
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('themeMode', isDarkMode ? 'dark' : 'light');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('themeMode');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }); 
     </script>
 </body>
 </html>

@@ -45,16 +45,15 @@ function detectColumnHeaders($worksheet) {
         'increment' => ['INCREMENT'],
         'grossSalary' => ['GROSS SALARY'],
         'absences' => ['ABS.'],
-        'days' => ['D'],
-        'hours' => ['H'],
-        'minutes' => ['M'],
-        'netSalary' => ['NET SALARY'],
-        'withHoldingTax' => ['WITHHOLDING TAX', 'W/HOLDING TAX'],
+        'days' => ['DAYS'],
+        'hours' => ['HOURS'],
+        'minutes' => ['MINUTES'],
+        'withHoldingTax' => ['WITHHOLDING TAX'],
         'totalGsisDeds' => ['TOTAL GSIS DEDS.'],
         'totalPagibigDeds' => ['TOTAL PAGIBIG DEDS.'],
-        'philhealth1' => ['PHIL. HEALTH 1', 'PHIL HEALTH 1', 'PHILHEALTH 1'],
-        'philhealth2' => ['PHIL. HEALTH 2', 'PHIL HEALTH 2', 'PHILHEALTH 2'],
-        'philhealth3' => ['PHIL. HEALTH 3', 'PHIL HEALTH 3', 'PHILHEALTH 3'],
+        'philhealth1' => ['PHILHEALTH 1'],
+        'philhealth2' => ['PHILHEALTHGOV'],
+    
         'totalOtherDeds' => ['TOTAL OTHER DEDS.'],
         'totalDeds' => ['TOTAL DEDS.'],
         'payFirst' => ['PAY 1ST', '1ST PAY'],
@@ -62,19 +61,21 @@ function detectColumnHeaders($worksheet) {
         'rtIns' => ['RT. INS.'],
         'ec' => ['EC'],
         'pagibig' => ['PAGIBIG'],
+        'netSalary' => ['NET SALARY'],
+        
         'lifeRetirement' => ['PERSONAL LIFE/RET INS.'],
         'gsisSalaryLoan' => ['GSIS SALARY LOAN'],
-        'gsisPolicyLoan' => ['GSIS POLICY LOAN', 'POLICY'],
+        'gsisPolicyLoan' => ['GSIS POLICY LOAN'],
         'gsisGfal' => ['GFAL'],
         'gsisCpl' => ['CPL'],
         'gsisMpl' => ['MPL'],
         'gsisMplLite' => ['MPL LITE'],
         'gsisEmergencyLoan' => ['EMERGENCY LOAN (ELA)', 'EMERGENCY LOAN', 'ELA'],
-        'pagibigFundCont' => ['PAGIBIG FUND CONT.', 'PAG-IBIG FUND CONT', 'PAG IBIG'],
+        'pagibigFundCont' => ['PAGIBIG FUND CONT.'],
         'pagibig2' => ['PAG-IBIG 2', 'PAGIBIG 2'],
         'pagibigMultiPurpLoan' => ['MULTI PURP. LOAN'],
         'pagibig_calamity_loan' => ['PAGIBIG CL', 'PAG-IBIG CL'],
-        'disallowance' => ['DISALLOWANCE', 'DISALLOW.', 'DISALLOW'],
+        'disallowance' => ['DISALLOWANCE'],
         'landbankSalaryLoan' => ['LANDBANK SALARY LOAN', 'LBP LOAN'],
         'ecc' => ['EARIST CREDIT COOP.', 'ECC'],
         'feu' => ['FEU'],
@@ -91,7 +92,7 @@ function detectColumnHeaders($worksheet) {
         $combinedHeader = '';
         
         // Check rows 6-10 for headers
-        for ($row = 7; $row <= 10; $row++) {
+        for ($row = 6; $row <= 10; $row++) {
             $cell = $worksheet->getCell($colLetter . $row);
             $cellValue = strtoupper(trim((string) $cell->getCalculatedValue()));
             if (!empty($cellValue)) {
@@ -166,6 +167,12 @@ function importDepartment($department) {
     $failed = 0;
 
     foreach ($sheetNames as $sheetName) {
+
+        $reader->setLoadSheetsOnly($sheetName);
+        $spreadsheet = $reader->load($filePath);
+        $worksheet = $spreadsheet->getActiveSheet();
+
+
         // Get month_id
         $monthStmt = $conn->prepare("SELECT id FROM month WHERE month_name = ?");
         $monthStmt->bind_param("s", $sheetName);
@@ -175,6 +182,10 @@ function importDepartment($department) {
         if ($monthResult->num_rows === 0) {
             error_log("Month not found: {$sheetName}");
             $monthStmt->close();
+
+            $spreadsheet->disconnectWorksheets();
+            unset($spreadsheet);
+            gc_collect_cycles();
             continue;
         }
         
@@ -196,8 +207,6 @@ function importDepartment($department) {
         }
 
         $headerMap = detectColumnHeaders($worksheet);
-
-
         $highestRow = $worksheet->getHighestRow();
 
         for ($row = 11; $row <= $highestRow; $row++) {
@@ -383,7 +392,7 @@ function importDepartment($department) {
                     $name, $position, $withHoldingTax, $lifeRetirement, $gsisSalaryLoan,
                     $gsisPolicyLoan, $gsisGfal, $gsisCpl, $gsisMpl, $gsisMplLite, $gsisEmergencyLoan,$totalGsisDeds,
                     $pagibigFundCont, $pagibig2,  $pagibigMultiPurpLoan, $pagibigCalamityLoan,  $totalPagibigDeds,
-                    $philHealth3, $disallowance, $landbankSalaryLoan, $ecc,
+                    $philHealth1, $disallowance, $landbankSalaryLoan, $ecc,
                     $feu, $mtsla, $eslai, $totalOtherDeds, $totalDeds, $department_id, $month_id, $payroll_id
                 );
                 $stmtRemittance->execute();

@@ -358,7 +358,7 @@
                     <select id="department" name="department" required>
                         <option value="">Choose Department...</option>
                         <option value="General Administration">General Administration</option>
-                        <option value="Auxiliary">Auxiliary</option>
+                        <option value="Auxilliary">Auxilliary</option>
                         <option value="Advance Education">Advance Education</option>
                         <option value="College of Engineering">College of Engineering</option>
                         <option value="College of Industrial Technology">College of Industrial Technology</option>
